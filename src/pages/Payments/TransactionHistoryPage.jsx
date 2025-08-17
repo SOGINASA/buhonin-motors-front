@@ -1,4 +1,14 @@
 import React, { useState } from 'react';
+import { 
+  CreditCard, 
+  RotateCcw, 
+  Gift, 
+  DollarSign, 
+  TrendingUp, 
+  Search, 
+  Lightbulb, 
+  BarChart3 
+} from 'lucide-react';
 import { usePayments } from '../../hooks/api/usePayments';
 
 const TransactionHistoryPage = () => {
@@ -71,12 +81,13 @@ const TransactionHistoryPage = () => {
 
   const getTransactionTypeIcon = (type) => {
     const icons = {
-      payment: '💳',
-      refund: '↩️',
-      bonus: '🎁',
-      withdrawal: '💰'
+      payment: CreditCard,
+      refund: RotateCcw,
+      bonus: Gift,
+      withdrawal: DollarSign
     };
-    return icons[type] || '💳';
+    const IconComponent = icons[type] || CreditCard;
+    return <IconComponent className="w-5 h-5" />;
   };
 
   const getStatusColor = (status) => {
@@ -112,10 +123,10 @@ const TransactionHistoryPage = () => {
   };
 
   const filterOptions = [
-    { value: 'all', label: 'ВСЕ ТРАНЗАКЦИИ', icon: '📊' },
-    { value: 'payment', label: 'ПЛАТЕЖИ', icon: '💳' },
-    { value: 'refund', label: 'ВОЗВРАТЫ', icon: '↩️' },
-    { value: 'bonus', label: 'БОНУСЫ', icon: '🎁' }
+    { value: 'all', label: 'ВСЕ ТРАНЗАКЦИИ', icon: BarChart3 },
+    { value: 'payment', label: 'ПЛАТЕЖИ', icon: CreditCard },
+    { value: 'refund', label: 'ВОЗВРАТЫ', icon: RotateCcw },
+    { value: 'bonus', label: 'БОНУСЫ', icon: Gift }
   ];
 
   const filteredTransactions = filter === 'all' 
@@ -151,8 +162,9 @@ const TransactionHistoryPage = () => {
 
         {/* Статистика */}
         <div className="mb-8 bg-black border-4 border-white p-6">
-          <h2 className="text-white font-black text-xl uppercase tracking-wider mb-6 text-center">
-            📈 СТАТИСТИКА ПЛАТЕЖЕЙ
+          <h2 className="text-white font-black text-xl uppercase tracking-wider mb-6 text-center flex items-center justify-center">
+            <TrendingUp className="w-6 h-6 mr-3" />
+            СТАТИСТИКА ПЛАТЕЖЕЙ
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="bg-blue-900 border-2 border-blue-500 p-4 text-center">
@@ -177,25 +189,29 @@ const TransactionHistoryPage = () => {
         {/* Фильтры */}
         <div className="mb-8">
           <div className="bg-black border-4 border-white p-6">
-            <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">🔍</span> ФИЛЬТР ПО ТИПУ:
+            <label className="block text-white font-black text-sm uppercase tracking-wider mb-4 flex items-center">
+              <Search className="w-4 h-4 mr-2 text-orange-500" />
+              ФИЛЬТР ПО ТИПУ:
             </label>
             
             <div className="flex flex-wrap gap-4">
-              {filterOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => setFilter(option.value)}
-                  className={`px-6 py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105
-                    ${filter === option.value 
-                      ? 'bg-orange-500 border-black text-black' 
-                      : 'bg-black border-gray-600 text-white hover:border-orange-500'
-                    }`}
-                >
-                  <span className="mr-2">{option.icon}</span>
-                  {option.label}
-                </button>
-              ))}
+              {filterOptions.map((option) => {
+                const IconComponent = option.icon;
+                return (
+                  <button
+                    key={option.value}
+                    onClick={() => setFilter(option.value)}
+                    className={`px-6 py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 flex items-center
+                      ${filter === option.value 
+                        ? 'bg-orange-500 border-black text-black' 
+                        : 'bg-black border-gray-600 text-white hover:border-orange-500'
+                      }`}
+                  >
+                    <IconComponent className="w-4 h-4 mr-2" />
+                    {option.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -203,7 +219,7 @@ const TransactionHistoryPage = () => {
         {/* Список транзакций */}
         {filteredTransactions.length === 0 ? (
           <div className="bg-black border-4 border-gray-600 p-12 text-center">
-            <div className="text-6xl mb-6">💳</div>
+            <CreditCard className="w-24 h-24 text-gray-600 mx-auto mb-6" />
             <h3 className="text-white font-black text-2xl uppercase tracking-wider mb-4">
               ТРАНЗАКЦИИ НЕ НАЙДЕНЫ
             </h3>
@@ -236,7 +252,7 @@ const TransactionHistoryPage = () => {
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <span className="text-lg">{getTransactionTypeIcon(transaction.transaction_type)}</span>
+                            <div className="text-white">{getTransactionTypeIcon(transaction.transaction_type)}</div>
                             <span className="text-white font-bold text-sm uppercase">
                               {getTransactionTypeText(transaction.transaction_type)}
                             </span>
@@ -274,9 +290,10 @@ const TransactionHistoryPage = () => {
                               onClick={() => handleRefundRequest(transaction.transaction_id)}
                               disabled={requestRefund?.isLoading}
                               className="px-3 py-1 bg-yellow-600 hover:bg-yellow-500 text-white font-black text-xs uppercase tracking-wider
-                                       border-2 border-black transition-all duration-300 transform hover:scale-105"
+                                       border-2 border-black transition-all duration-300 transform hover:scale-105 flex items-center gap-1"
                             >
-                              ↩️ ВОЗВРАТ
+                              <RotateCcw className="w-3 h-3" />
+                              ВОЗВРАТ
                             </button>
                           )}
                         </td>
@@ -293,7 +310,7 @@ const TransactionHistoryPage = () => {
                 <div key={transaction.transaction_id} className="bg-black border-4 border-white p-6 relative hover:border-orange-500 transition-colors duration-300">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">{getTransactionTypeIcon(transaction.transaction_type)}</span>
+                      <div className="text-white">{getTransactionTypeIcon(transaction.transaction_type)}</div>
                       <div>
                         <div className="text-orange-500 font-black text-lg">#{transaction.transaction_id}</div>
                         <div className="text-white font-bold text-sm uppercase">
@@ -340,9 +357,10 @@ const TransactionHistoryPage = () => {
                         onClick={() => handleRefundRequest(transaction.transaction_id)}
                         disabled={requestRefund?.isLoading}
                         className="w-full py-3 bg-yellow-600 hover:bg-yellow-500 text-white font-black text-sm uppercase tracking-wider
-                                 border-2 border-black transition-all duration-300"
+                                 border-2 border-black transition-all duration-300 flex items-center justify-center gap-2"
                       >
-                        ↩️ ЗАПРОСИТЬ ВОЗВРАТ
+                        <RotateCcw className="w-4 h-4" />
+                        ЗАПРОСИТЬ ВОЗВРАТ
                       </button>
                     </div>
                   )}
@@ -357,7 +375,7 @@ const TransactionHistoryPage = () => {
         {/* Информация о возвратах */}
         <div className="bg-black border-4 border-yellow-500 p-6">
           <div className="flex items-start gap-3">
-            <span className="text-yellow-500 text-lg">💡</span>
+            <Lightbulb className="w-5 h-5 text-yellow-500 mt-1" />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-2 text-yellow-400">ИНФОРМАЦИЯ О ВОЗВРАТАХ:</p>
               <ul className="space-y-1 text-xs normal-case">

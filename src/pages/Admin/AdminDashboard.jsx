@@ -1,5 +1,20 @@
 import React from 'react';
 import { useQuery } from 'react-query';
+import { 
+  Users, 
+  Car, 
+  Clock, 
+  AlertTriangle, 
+  Search, 
+  Siren, 
+  User, 
+  BarChart3, 
+  InboxX, 
+  Zap, 
+  Lightbulb, 
+  Settings, 
+  CheckCircle 
+} from 'lucide-react';
 import api from '../../services/api';
 
 const AdminDashboard = () => {
@@ -28,7 +43,7 @@ const AdminDashboard = () => {
       title: 'ПОЛЬЗОВАТЕЛИ',
       value: dashboardStats.total_users?.toLocaleString() || 0,
       subtitle: `Новых за сегодня: ${dashboardStats.users_today || 0}`,
-      icon: '👥',
+      icon: Users,
       color: 'blue',
       bgColor: 'bg-blue-600',
       borderColor: 'border-blue-500'
@@ -37,7 +52,7 @@ const AdminDashboard = () => {
       title: 'ОБЪЯВЛЕНИЯ',
       value: dashboardStats.total_listings?.toLocaleString() || 0,
       subtitle: `Активных: ${dashboardStats.active_listings || 0}`,
-      icon: '🚗',
+      icon: Car,
       color: 'green',
       bgColor: 'bg-green-600',
       borderColor: 'border-green-500'
@@ -46,7 +61,7 @@ const AdminDashboard = () => {
       title: 'МОДЕРАЦИЯ',
       value: dashboardStats.pending_moderation || 0,
       subtitle: 'Ожидают проверки',
-      icon: '⏳',
+      icon: Clock,
       color: 'yellow',
       bgColor: 'bg-yellow-600',
       borderColor: 'border-yellow-500'
@@ -55,7 +70,7 @@ const AdminDashboard = () => {
       title: 'ЖАЛОБЫ',
       value: dashboardStats.open_reports || 0,
       subtitle: 'Требуют рассмотрения',
-      icon: '⚠️',
+      icon: AlertTriangle,
       color: 'red',
       bgColor: 'bg-red-600',
       borderColor: 'border-red-500'
@@ -66,7 +81,7 @@ const AdminDashboard = () => {
     {
       title: 'МОДЕРАЦИЯ КОНТЕНТА',
       count: dashboardStats.pending_moderation || 0,
-      icon: '🔍',
+      icon: Search,
       url: '/admin/moderation',
       bgColor: 'bg-blue-600',
       hoverColor: 'hover:bg-blue-500'
@@ -74,7 +89,7 @@ const AdminDashboard = () => {
     {
       title: 'РАССМОТРЕТЬ ЖАЛОБЫ',
       count: dashboardStats.open_reports || 0,
-      icon: '🚨',
+      icon: Siren,
       url: '/admin/reports',
       bgColor: 'bg-red-600',
       hoverColor: 'hover:bg-red-500'
@@ -82,7 +97,7 @@ const AdminDashboard = () => {
     {
       title: 'УПРАВЛЕНИЕ ПОЛЬЗОВАТЕЛЯМИ',
       count: dashboardStats.total_users || 0,
-      icon: '👤',
+      icon: User,
       url: '/admin/users',
       bgColor: 'bg-green-600',
       hoverColor: 'hover:bg-green-500'
@@ -111,29 +126,33 @@ const AdminDashboard = () => {
 
         {/* Статистические карточки */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {statCards.map((card, index) => (
-            <div key={index} className="bg-black border-4 border-white p-6 relative group hover:border-orange-500 transition-colors duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-3xl">{card.icon}</span>
-                <div className={`w-4 h-4 ${card.bgColor} group-hover:bg-orange-500 transition-colors duration-300`}></div>
-              </div>
-              
-              <h3 className="text-white font-black text-sm uppercase tracking-wider mb-2">
-                {card.title}
-              </h3>
-              
-              <div className="text-3xl md:text-4xl font-black text-orange-500 mb-2">
-                {card.value}
-              </div>
-              
-              <p className="text-gray-400 font-bold text-xs uppercase">
-                {card.subtitle}
-              </p>
+          {statCards.map((card, index) => {
+            const IconComponent = card.icon;
+            
+            return (
+              <div key={index} className="bg-black border-4 border-white p-6 relative group hover:border-orange-500 transition-colors duration-300">
+                <div className="flex items-center justify-between mb-4">
+                  <IconComponent className="w-8 h-8 text-orange-500" />
+                  <div className={`w-4 h-4 ${card.bgColor} group-hover:bg-orange-500 transition-colors duration-300`}></div>
+                </div>
+                
+                <h3 className="text-white font-black text-sm uppercase tracking-wider mb-2">
+                  {card.title}
+                </h3>
+                
+                <div className="text-3xl md:text-4xl font-black text-orange-500 mb-2">
+                  {card.value}
+                </div>
+                
+                <p className="text-gray-400 font-bold text-xs uppercase">
+                  {card.subtitle}
+                </p>
 
-              {/* Декоративная линия */}
-              <div className="absolute bottom-2 left-2 w-8 h-1 bg-orange-500"></div>
-            </div>
-          ))}
+                {/* Декоративная линия */}
+                <div className="absolute bottom-2 left-2 w-8 h-1 bg-orange-500"></div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Основной контент */}
@@ -141,7 +160,7 @@ const AdminDashboard = () => {
           {/* Последние действия */}
           <div className="bg-black border-4 border-white p-6">
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">📊</span>
+              <BarChart3 className="w-6 h-6 text-orange-500" />
               <h2 className="text-white font-black text-xl uppercase tracking-wider">
                 ПОСЛЕДНИЕ ДЕЙСТВИЯ
               </h2>
@@ -162,7 +181,9 @@ const AdminDashboard = () => {
                 ))
               ) : (
                 <div className="p-8 text-center">
-                  <div className="text-4xl mb-4">📭</div>
+                  <div className="flex justify-center mb-4">
+                    <InboxX className="w-12 h-12 text-gray-400" />
+                  </div>
                   <p className="text-gray-400 font-bold uppercase">НЕТ ДАННЫХ</p>
                 </div>
               )}
@@ -172,7 +193,7 @@ const AdminDashboard = () => {
           {/* Быстрые действия */}
           <div className="bg-black border-4 border-white p-6">
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">⚡</span>
+              <Zap className="w-6 h-6 text-orange-500" />
               <h2 className="text-white font-black text-xl uppercase tracking-wider">
                 БЫСТРЫЕ ДЕЙСТВИЯ
               </h2>
@@ -180,33 +201,37 @@ const AdminDashboard = () => {
             </div>
 
             <div className="space-y-4">
-              {quickActions.map((action, index) => (
-                <button
-                  key={index}
-                  onClick={() => window.location.href = action.url}
-                  className={`w-full p-6 ${action.bgColor} ${action.hoverColor} border-4 border-black text-white font-black text-lg uppercase tracking-wider
-                             transition-all duration-300 transform hover:scale-105 active:scale-95 relative group`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="text-2xl">{action.icon}</span>
-                      <span>{action.title}</span>
+              {quickActions.map((action, index) => {
+                const ActionIcon = action.icon;
+                
+                return (
+                  <button
+                    key={index}
+                    onClick={() => window.location.href = action.url}
+                    className={`w-full p-6 ${action.bgColor} ${action.hoverColor} border-4 border-black text-white font-black text-lg uppercase tracking-wider
+                               transition-all duration-300 transform hover:scale-105 active:scale-95 relative group`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <ActionIcon className="w-6 h-6" />
+                        <span>{action.title}</span>
+                      </div>
+                      <div className="bg-black bg-opacity-30 px-3 py-1 border border-white font-black text-sm">
+                        {action.count}
+                      </div>
                     </div>
-                    <div className="bg-black bg-opacity-30 px-3 py-1 border border-white font-black text-sm">
-                      {action.count}
-                    </div>
-                  </div>
-                  
-                  {/* Декоративный элемент */}
-                  <div className="absolute top-2 right-2 w-3 h-3 bg-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                </button>
-              ))}
+                    
+                    {/* Декоративный элемент */}
+                    <div className="absolute top-2 right-2 w-3 h-3 bg-white opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Дополнительная информация */}
             <div className="mt-6 bg-gray-900 border-2 border-orange-500 p-4">
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-orange-500 font-black">💡</span>
+                <Lightbulb className="w-4 h-4 text-orange-500" />
                 <span className="text-white font-bold uppercase">
                   СИСТЕМА РАБОТАЕТ НОРМАЛЬНО
                 </span>
@@ -218,7 +243,7 @@ const AdminDashboard = () => {
         {/* Системная информация */}
         <div className="mt-12 bg-black border-4 border-gray-600 p-6">
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-2xl">🔧</span>
+            <Settings className="w-6 h-6 text-gray-400" />
             <h2 className="text-white font-black text-xl uppercase tracking-wider">
               СИСТЕМНАЯ ИНФОРМАЦИЯ
             </h2>
@@ -227,7 +252,10 @@ const AdminDashboard = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-gray-900 border-2 border-gray-600 p-4 text-center">
-              <div className="text-green-500 font-black text-lg mb-2">✅ ОНЛАЙН</div>
+              <div className="flex items-center justify-center gap-2 text-green-500 font-black text-lg mb-2">
+                <CheckCircle className="w-5 h-5" />
+                ОНЛАЙН
+              </div>
               <div className="text-gray-400 font-bold text-sm uppercase">СТАТУС СЕРВЕРА</div>
             </div>
             

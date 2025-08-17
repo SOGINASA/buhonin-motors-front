@@ -1,4 +1,5 @@
 import React from 'react';
+import { Car, Settings, ClipboardList } from 'lucide-react';
 import { useCars } from '../../hooks/api/useCars';
 
 const CarAttributes = ({ attributes, onChange }) => {
@@ -21,7 +22,7 @@ const CarAttributes = ({ attributes, onChange }) => {
   const fieldGroups = [
     {
       title: 'ОСНОВНЫЕ ХАРАКТЕРИСТИКИ',
-      icon: '🚗',
+      icon: Car,
       fields: [
         {
           key: 'year',
@@ -52,7 +53,7 @@ const CarAttributes = ({ attributes, onChange }) => {
     },
     {
       title: 'ТЕХНИЧЕСКИЕ ДАННЫЕ',
-      icon: '⚙️',
+      icon: Settings,
       fields: [
         {
           key: 'body_type_id',
@@ -130,7 +131,7 @@ const CarAttributes = ({ attributes, onChange }) => {
     },
     {
       title: 'ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ',
-      icon: '📋',
+      icon: ClipboardList,
       fields: [
         {
           key: 'customs_cleared',
@@ -253,32 +254,36 @@ const CarAttributes = ({ attributes, onChange }) => {
 
       {/* Группы полей */}
       <div className="space-y-10">
-        {fieldGroups.map((group, groupIndex) => (
-          <div key={groupIndex} className="bg-gray-900 border-2 border-white p-6">
-            {/* Заголовок группы */}
-            <div className="flex items-center gap-3 mb-8">
-              <span className="text-2xl">{group.icon}</span>
-              <h4 className="text-white font-black text-lg uppercase tracking-wider">
-                {group.title}
-              </h4>
-              <div className="flex-1 h-1 bg-orange-500 ml-4"></div>
-            </div>
+        {fieldGroups.map((group, groupIndex) => {
+          const IconComponent = group.icon;
+          
+          return (
+            <div key={groupIndex} className="bg-gray-900 border-2 border-white p-6">
+              {/* Заголовок группы */}
+              <div className="flex items-center gap-3 mb-8">
+                <IconComponent className="w-6 h-6 text-orange-500" />
+                <h4 className="text-white font-black text-lg uppercase tracking-wider">
+                  {group.title}
+                </h4>
+                <div className="flex-1 h-1 bg-orange-500 ml-4"></div>
+              </div>
 
-            {/* Поля группы */}
-            <div className="space-y-6">
-              {group.fields.map((field, fieldIndex) => (
-                <div key={fieldIndex}>
-                  {field.type !== 'checkbox' && (
-                    <label className="block text-white font-black text-sm uppercase tracking-wider mb-3">
-                      <span className="text-orange-500">●</span> {field.label}
-                    </label>
-                  )}
-                  {renderField(field)}
-                </div>
-              ))}
+              {/* Поля группы */}
+              <div className="space-y-6">
+                {group.fields.map((field, fieldIndex) => (
+                  <div key={fieldIndex}>
+                    {field.type !== 'checkbox' && (
+                      <label className="block text-white font-black text-sm uppercase tracking-wider mb-3">
+                        <span className="text-orange-500">●</span> {field.label}
+                      </label>
+                    )}
+                    {renderField(field)}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Прогресс заполнения */}

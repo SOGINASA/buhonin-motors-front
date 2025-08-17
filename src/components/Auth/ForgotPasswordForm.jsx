@@ -1,4 +1,15 @@
 import React, { useState } from 'react';
+import { 
+  Smartphone, 
+  CheckCircle, 
+  AlertTriangle, 
+  RotateCcw, 
+  ClipboardList, 
+  ArrowLeft, 
+  MessageCircle, 
+  Shield,
+  Loader2
+} from 'lucide-react';
 import api from '../../services/api';
 
 const ForgotPasswordForm = ({ onSuccess }) => {
@@ -41,7 +52,10 @@ const ForgotPasswordForm = ({ onSuccess }) => {
         {/* Поле телефона */}
         <div>
           <label className="block text-white font-black text-sm uppercase tracking-wider mb-3">
-            <span className="text-orange-500">📱</span> НОМЕР ТЕЛЕФОНА
+            <div className="flex items-center gap-2">
+              <Smartphone className="text-orange-500" size={18} />
+              НОМЕР ТЕЛЕФОНА
+            </div>
           </label>
           
           <div className="relative group">
@@ -66,7 +80,7 @@ const ForgotPasswordForm = ({ onSuccess }) => {
         {message && (
           <div className="bg-green-900 border-4 border-green-500 p-4">
             <div className="flex items-center gap-3">
-              <span className="text-green-500 text-xl">✅</span>
+              <CheckCircle className="text-green-500" size={20} />
               <span className="text-green-300 font-bold uppercase">{message}</span>
             </div>
           </div>
@@ -76,7 +90,7 @@ const ForgotPasswordForm = ({ onSuccess }) => {
         {error && (
           <div className="bg-red-900 border-4 border-red-500 p-4">
             <div className="flex items-center gap-3">
-              <span className="text-red-500 text-xl">⚠</span>
+              <AlertTriangle className="text-red-500" size={20} />
               <span className="text-red-300 font-bold uppercase">{error}</span>
             </div>
           </div>
@@ -94,11 +108,14 @@ const ForgotPasswordForm = ({ onSuccess }) => {
         >
           {loading ? (
             <div className="flex items-center justify-center gap-3">
-              <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              <Loader2 className="animate-spin" size={24} />
               ОТПРАВЛЯЕМ...
             </div>
           ) : (
-            <>🔄 ВОССТАНОВИТЬ ПАРОЛЬ</>
+            <div className="flex items-center justify-center gap-2">
+              <RotateCcw size={24} />
+              ВОССТАНОВИТЬ ПАРОЛЬ
+            </div>
           )}
         </button>
 
@@ -123,7 +140,7 @@ const ForgotPasswordForm = ({ onSuccess }) => {
         {/* Инструкции */}
         <div className="bg-gray-900 border-2 border-blue-500 p-4">
           <div className="flex items-start gap-3">
-            <span className="text-blue-500 text-lg">📋</span>
+            <ClipboardList className="text-blue-500 mt-1" size={20} />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-2 text-blue-400">КАК ЭТО РАБОТАЕТ:</p>
               <ol className="text-xs normal-case space-y-1 list-decimal list-inside">
@@ -141,20 +158,26 @@ const ForgotPasswordForm = ({ onSuccess }) => {
           {/* Вернуться к входу */}
           <button className="bg-gray-900 border-2 border-white text-white font-black text-sm uppercase tracking-wider py-3 px-4
                            hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105">
-            ← НАЗАД К ВХОДУ
+            <div className="flex items-center justify-center gap-2">
+              <ArrowLeft size={16} />
+              НАЗАД К ВХОДУ
+            </div>
           </button>
 
           {/* Связаться с поддержкой */}
           <button className="bg-white border-2 border-black text-black font-black text-sm uppercase tracking-wider py-3 px-4
                            hover:bg-orange-500 hover:border-orange-500 transition-all duration-300 transform hover:scale-105">
-            💬 ПОДДЕРЖКА
+            <div className="flex items-center justify-center gap-2">
+              <MessageCircle size={16} />
+              ПОДДЕРЖКА
+            </div>
           </button>
         </div>
 
         {/* Безопасность */}
         <div className="bg-gray-900 border-2 border-green-500 p-4">
           <div className="flex items-start gap-3">
-            <span className="text-green-500 text-lg">🛡️</span>
+            <Shield className="text-green-500 mt-1" size={20} />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-1 text-green-400">БЕЗОПАСНОСТЬ</p>
               <p className="text-xs normal-case">

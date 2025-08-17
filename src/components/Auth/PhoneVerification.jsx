@@ -1,4 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { 
+  Smartphone, 
+  Hash, 
+  AlertTriangle, 
+  CheckCircle, 
+  Timer, 
+  Send, 
+  Lightbulb,
+  Loader2
+} from 'lucide-react';
 import api from '../../services/api';
 
 const PhoneVerification = ({ phoneNumber, onSuccess }) => {
@@ -62,7 +72,7 @@ const PhoneVerification = ({ phoneNumber, onSuccess }) => {
         {/* Информация о номере */}
         <div className="bg-gray-900 border-2 border-white p-4 mb-4">
           <div className="flex items-center justify-center gap-3">
-            <span className="text-orange-500 text-xl">📱</span>
+            <Smartphone className="text-orange-500" size={24} />
             <div className="text-center">
               <p className="text-gray-300 font-bold text-sm uppercase mb-1">
                 КОД ОТПРАВЛЕН НА НОМЕР:
@@ -79,7 +89,10 @@ const PhoneVerification = ({ phoneNumber, onSuccess }) => {
         {/* Поле ввода кода */}
         <div>
           <label className="block text-white font-black text-sm uppercase tracking-wider mb-3">
-            <span className="text-orange-500">🔢</span> ВВЕДИТЕ КОД ИЗ SMS
+            <div className="flex items-center gap-2">
+              <Hash className="text-orange-500" size={18} />
+              ВВЕДИТЕ КОД ИЗ SMS
+            </div>
           </label>
           
           <div className="relative group">
@@ -118,7 +131,7 @@ const PhoneVerification = ({ phoneNumber, onSuccess }) => {
         {error && (
           <div className="bg-red-900 border-4 border-red-500 p-4">
             <div className="flex items-center gap-3">
-              <span className="text-red-500 text-xl">⚠</span>
+              <AlertTriangle className="text-red-500" size={20} />
               <span className="text-red-300 font-bold uppercase">{error}</span>
             </div>
           </div>
@@ -136,11 +149,14 @@ const PhoneVerification = ({ phoneNumber, onSuccess }) => {
         >
           {loading ? (
             <div className="flex items-center justify-center gap-3">
-              <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              <Loader2 className="animate-spin" size={24} />
               ПРОВЕРЯЕМ...
             </div>
           ) : (
-            <>✅ ПОДТВЕРДИТЬ</>
+            <div className="flex items-center justify-center gap-2">
+              <CheckCircle size={24} />
+              ПОДТВЕРДИТЬ
+            </div>
           )}
         </button>
 
@@ -150,7 +166,7 @@ const PhoneVerification = ({ phoneNumber, onSuccess }) => {
             {timeLeft > 0 ? (
               <div>
                 <div className="flex items-center justify-center gap-3 mb-3">
-                  <span className="text-orange-500 text-lg">⏱️</span>
+                  <Timer className="text-orange-500" size={20} />
                   <span className="text-white font-black text-lg tracking-wider">
                     ПОВТОРИТЬ ЧЕРЕЗ: {formatTime(timeLeft)}
                   </span>
@@ -170,7 +186,10 @@ const PhoneVerification = ({ phoneNumber, onSuccess }) => {
                 className="bg-white border-2 border-black text-black font-black text-sm uppercase tracking-wider py-3 px-6
                            hover:bg-orange-500 hover:border-orange-500 transition-all duration-300 transform hover:scale-105"
               >
-                📤 ОТПРАВИТЬ КОД ПОВТОРНО
+                <div className="flex items-center justify-center gap-2">
+                  <Send size={16} />
+                  ОТПРАВИТЬ КОД ПОВТОРНО
+                </div>
               </button>
             )}
           </div>
@@ -197,7 +216,7 @@ const PhoneVerification = ({ phoneNumber, onSuccess }) => {
         {/* Помощь */}
         <div className="bg-gray-900 border-2 border-blue-500 p-4">
           <div className="flex items-start gap-3">
-            <span className="text-blue-500 text-lg">💡</span>
+            <Lightbulb className="text-blue-500 mt-1" size={20} />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-2 text-blue-400">НЕ ПОЛУЧИЛИ КОД?</p>
               <ul className="text-xs normal-case space-y-1">

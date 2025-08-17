@@ -31,48 +31,6 @@ const FavoriteButton = ({ listingId, isFavorite, onToggle }) => {
     <button 
       onClick={handleToggle} 
       disabled={loading}
-<<<<<<< HEAD
-      className={`
-        group relative w-14 h-14 border-4 transition-all duration-300 transform
-        ${loading 
-          ? 'border-gray-600 bg-gray-800 cursor-not-allowed' 
-          : favorite 
-            ? 'border-black bg-orange-500 hover:bg-orange-400 hover:scale-110 active:scale-95' 
-            : 'border-orange-500 bg-black hover:bg-orange-500 hover:scale-110 active:scale-95'
-        }
-        ${!loading && 'hover:shadow-lg'}
-      `}
-    >
-      {/* Декоративные элементы */}
-      <div className={`absolute top-1 right-1 w-2 h-2 transition-colors duration-300
-        ${loading 
-          ? 'bg-gray-600' 
-          : favorite 
-            ? 'bg-black' 
-            : 'bg-orange-500 group-hover:bg-black'
-        }`}
-      ></div>
-      
-      {/* Иконка или состояние загрузки */}
-      <div className="flex items-center justify-center w-full h-full">
-        {loading ? (
-          <div className={`w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin`}></div>
-        ) : (
-          <div className={`text-2xl font-black transition-colors duration-300
-            ${favorite 
-              ? 'text-black' 
-              : 'text-orange-500 group-hover:text-black'
-            }`}
-          >
-            {favorite ? '●' : '○'}
-          </div>
-        )}
-      </div>
-
-      {/* Пульс эффект при активном состоянии */}
-      {favorite && !loading && (
-        <div className="absolute inset-0 border-4 border-orange-500 animate-pulse opacity-50"></div>
-=======
       style={{
         background: 'none',
         border: 'none',
@@ -92,7 +50,6 @@ const FavoriteButton = ({ listingId, isFavorite, onToggle }) => {
         ) : (
           <HeartOff color="#222" size={24} />
         )
->>>>>>> 0593c2272dc54756eb84593a00f8aecbb9408f28
       )}
     </button>
   );

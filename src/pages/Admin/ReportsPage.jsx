@@ -1,5 +1,25 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { 
+  Ban, 
+  AlertTriangle, 
+  Skull, 
+  FileText, 
+  HelpCircle, 
+  Unlock, 
+  CheckCircle, 
+  X, 
+  Search, 
+  Inbox, 
+  FileX, 
+  Target, 
+  Clock, 
+  User, 
+  Calendar, 
+  Tag, 
+  BarChart3,
+  Edit
+} from 'lucide-react';
 import api from '../../services/api';
 
 const ReportsPage = () => {
@@ -40,19 +60,20 @@ const ReportsPage = () => {
 
   const getReasonIcon = (reason) => {
     const icons = {
-      spam: '🚫',
-      inappropriate: '⚠️',
-      fraud: '💀',
-      duplicate: '📄',
-      other: '❓'
+      spam: Ban,
+      inappropriate: AlertTriangle,
+      fraud: Skull,
+      duplicate: FileText,
+      other: HelpCircle
     };
-    return icons[reason] || '❓';
+    const IconComponent = icons[reason] || HelpCircle;
+    return <IconComponent className="w-6 h-6" />;
   };
 
   const statusOptions = [
-    { value: 'open', label: 'ОТКРЫТЫЕ', icon: '🔓', color: 'text-red-500' },
-    { value: 'resolved', label: 'РЕШЕННЫЕ', icon: '✅', color: 'text-green-500' },
-    { value: 'dismissed', label: 'ОТКЛОНЕННЫЕ', icon: '❌', color: 'text-gray-500' }
+    { value: 'open', label: 'ОТКРЫТЫЕ', icon: Unlock, color: 'text-red-500' },
+    { value: 'resolved', label: 'РЕШЕННЫЕ', icon: CheckCircle, color: 'text-green-500' },
+    { value: 'dismissed', label: 'ОТКЛОНЕННЫЕ', icon: X, color: 'text-gray-500' }
   ];
 
   if (isLoading) {
@@ -91,24 +112,27 @@ const ReportsPage = () => {
         <div className="mb-8">
           <div className="bg-black border-4 border-white p-6">
             <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">🔍</span> ФИЛЬТР ПО СТАТУСУ:
+              <Search className="w-4 h-4 inline mr-2 text-orange-500" /> ФИЛЬТР ПО СТАТУСУ:
             </label>
             
             <div className="flex flex-wrap gap-4">
-              {statusOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => setStatusFilter(option.value)}
-                  className={`px-6 py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105
-                    ${statusFilter === option.value 
-                      ? 'bg-orange-500 border-black text-black' 
-                      : 'bg-black border-gray-600 text-white hover:border-orange-500'
-                    }`}
-                >
-                  <span className="mr-2">{option.icon}</span>
-                  {option.label}
-                </button>
-              ))}
+              {statusOptions.map((option) => {
+                const IconComponent = option.icon;
+                return (
+                  <button
+                    key={option.value}
+                    onClick={() => setStatusFilter(option.value)}
+                    className={`px-6 py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 flex items-center
+                      ${statusFilter === option.value 
+                        ? 'bg-orange-500 border-black text-black' 
+                        : 'bg-black border-gray-600 text-white hover:border-orange-500'
+                      }`}
+                  >
+                    <IconComponent className="w-4 h-4 mr-2" />
+                    {option.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -116,7 +140,7 @@ const ReportsPage = () => {
         {/* Список жалоб */}
         {reportsList.length === 0 ? (
           <div className="bg-black border-4 border-gray-600 p-12 text-center">
-            <div className="text-6xl mb-6">📭</div>
+            <Inbox className="w-24 h-24 text-gray-600 mx-auto mb-6" />
             <h3 className="text-white font-black text-2xl uppercase tracking-wider mb-4">
               НЕТ ЖАЛОБ
             </h3>
@@ -134,7 +158,7 @@ const ReportsPage = () => {
                     {/* Основная информация */}
                     <div className="mb-6">
                       <div className="flex items-center gap-3 mb-4">
-                        <span className="text-2xl">{getReasonIcon(report.report_reason)}</span>
+                        <div className="text-white">{getReasonIcon(report.report_reason)}</div>
                         <h4 className="text-white font-black text-xl uppercase tracking-wider">
                           ЖАЛОБА #{report.report_id}
                         </h4>
@@ -145,19 +169,28 @@ const ReportsPage = () => {
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div className="bg-gray-900 border-2 border-gray-600 p-3">
-                          <div className="text-gray-400 font-black text-xs uppercase mb-1">ЖАЛОБЩИК:</div>
+                          <div className="text-gray-400 font-black text-xs uppercase mb-1 flex items-center">
+                            <User className="w-3 h-3 mr-1" />
+                            ЖАЛОБЩИК:
+                          </div>
                           <div className="text-orange-500 font-bold">{report.reporter_name}</div>
                         </div>
                         
                         <div className="bg-gray-900 border-2 border-gray-600 p-3">
-                          <div className="text-gray-400 font-black text-xs uppercase mb-1">ДАТА:</div>
+                          <div className="text-gray-400 font-black text-xs uppercase mb-1 flex items-center">
+                            <Calendar className="w-3 h-3 mr-1" />
+                            ДАТА:
+                          </div>
                           <div className="text-orange-500 font-bold">
                             {new Date(report.created_date).toLocaleString('ru-RU')}
                           </div>
                         </div>
                         
                         <div className="bg-gray-900 border-2 border-gray-600 p-3">
-                          <div className="text-gray-400 font-black text-xs uppercase mb-1">ТИП:</div>
+                          <div className="text-gray-400 font-black text-xs uppercase mb-1 flex items-center">
+                            <Tag className="w-3 h-3 mr-1" />
+                            ТИП:
+                          </div>
                           <div className="text-orange-500 font-bold">{report.content_type?.toUpperCase()}</div>
                         </div>
                       </div>
@@ -165,16 +198,18 @@ const ReportsPage = () => {
 
                     {/* Описание жалобы */}
                     <div className="mb-6 bg-red-900 border-2 border-red-500 p-4">
-                      <div className="text-red-400 font-black text-sm uppercase tracking-wider mb-2">
-                        📝 ОПИСАНИЕ ЖАЛОБЫ:
+                      <div className="text-red-400 font-black text-sm uppercase tracking-wider mb-2 flex items-center">
+                        <Edit className="w-4 h-4 mr-2" />
+                        ОПИСАНИЕ ЖАЛОБЫ:
                       </div>
                       <p className="text-red-300 font-bold">{report.description}</p>
                     </div>
 
                     {/* Объект жалобы */}
                     <div className="mb-6 bg-gray-900 border-2 border-gray-600 p-4">
-                      <div className="text-gray-400 font-black text-sm uppercase tracking-wider mb-3">
-                        🎯 ОБЪЕКТ ЖАЛОБЫ:
+                      <div className="text-gray-400 font-black text-sm uppercase tracking-wider mb-3 flex items-center">
+                        <Target className="w-4 h-4 mr-2" />
+                        ОБЪЕКТ ЖАЛОБЫ:
                       </div>
                       <div className="bg-black border-2 border-gray-700 p-3">
                         <h5 className="text-white font-bold text-lg mb-2">{report.content_title}</h5>
@@ -189,15 +224,21 @@ const ReportsPage = () => {
                     {report.resolution_notes && (
                       <div className="bg-green-900 border-2 border-green-500 p-4">
                         <div className="flex items-start gap-3">
-                          <span className="text-green-500 text-lg">✅</span>
+                          <CheckCircle className="w-5 h-5 text-green-500 mt-1" />
                           <div>
                             <div className="text-green-400 font-black text-sm uppercase tracking-wider mb-2">
                               РЕШЕНИЕ:
                             </div>
                             <p className="text-green-300 font-bold mb-3">{report.resolution_notes}</p>
-                            <div className="text-green-400 text-xs">
-                              <span className="font-bold">Решено:</span> {new Date(report.resolved_date).toLocaleString('ru-RU')} 
-                              <span className="font-bold ml-4">Модератор:</span> {report.resolved_by_name}
+                            <div className="text-green-400 text-xs flex items-center gap-4">
+                              <span className="flex items-center">
+                                <Clock className="w-3 h-3 mr-1" />
+                                <span className="font-bold">Решено:</span> {new Date(report.resolved_date).toLocaleString('ru-RU')}
+                              </span>
+                              <span className="flex items-center">
+                                <User className="w-3 h-3 mr-1" />
+                                <span className="font-bold">Модератор:</span> {report.resolved_by_name}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -217,25 +258,27 @@ const ReportsPage = () => {
                           <button
                             onClick={() => handleResolveReport(report.report_id, 'action_taken')}
                             disabled={resolveReportMutation.isLoading}
-                            className={`w-full py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105
+                            className={`w-full py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 flex items-center justify-center
                               ${resolveReportMutation.isLoading
                                 ? 'bg-gray-800 border-gray-600 text-gray-400 cursor-not-allowed'
                                 : 'bg-green-600 border-black text-white hover:bg-green-500'
                               }`}
                           >
-                            ✅ ПРИНЯТЬ МЕРЫ
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            ПРИНЯТЬ МЕРЫ
                           </button>
                           
                           <button
                             onClick={() => handleResolveReport(report.report_id, 'dismissed')}
                             disabled={resolveReportMutation.isLoading}
-                            className={`w-full py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105
+                            className={`w-full py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 flex items-center justify-center
                               ${resolveReportMutation.isLoading
                                 ? 'bg-gray-800 border-gray-600 text-gray-400 cursor-not-allowed'
                                 : 'bg-gray-600 border-black text-white hover:bg-gray-500'
                               }`}
                           >
-                            ❌ ОТКЛОНИТЬ
+                            <X className="w-4 h-4 mr-2" />
+                            ОТКЛОНИТЬ
                           </button>
                         </div>
 
@@ -252,7 +295,8 @@ const ReportsPage = () => {
 
                       {/* Приоритет */}
                       <div className="mt-4 bg-yellow-900 border-2 border-yellow-500 p-3 text-center">
-                        <div className="text-yellow-500 font-black text-xs uppercase mb-1">
+                        <div className="text-yellow-500 font-black text-xs uppercase mb-1 flex items-center justify-center">
+                          <AlertTriangle className="w-3 h-3 mr-1" />
                           ПРИОРИТЕТ:
                         </div>
                         <div className="text-white font-bold">
@@ -274,20 +318,21 @@ const ReportsPage = () => {
         {/* Статистика жалоб */}
         <div className="mt-8 bg-black border-4 border-gray-600 p-6">
           <div className="text-center">
-            <h3 className="text-white font-black text-lg uppercase tracking-wider mb-4">
-              📊 СТАТИСТИКА ЖАЛОБ
+            <h3 className="text-white font-black text-lg uppercase tracking-wider mb-4 flex items-center justify-center">
+              <BarChart3 className="w-5 h-5 mr-2" />
+              СТАТИСТИКА ЖАЛОБ
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gray-900 border-2 border-red-500 p-4">
-                <div className="text-red-500 font-black text-lg">🔓</div>
+                <Unlock className="w-6 h-6 text-red-500 mx-auto mb-2" />
                 <div className="text-white font-bold">ОТКРЫТЫЕ</div>
               </div>
               <div className="bg-gray-900 border-2 border-green-500 p-4">
-                <div className="text-green-500 font-black text-lg">✅</div>
+                <CheckCircle className="w-6 h-6 text-green-500 mx-auto mb-2" />
                 <div className="text-white font-bold">РЕШЕННЫЕ</div>
               </div>
               <div className="bg-gray-900 border-2 border-gray-500 p-4">
-                <div className="text-gray-500 font-black text-lg">❌</div>
+                <X className="w-6 h-6 text-gray-500 mx-auto mb-2" />
                 <div className="text-white font-bold">ОТКЛОНЕННЫЕ</div>
               </div>
             </div>

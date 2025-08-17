@@ -1,4 +1,16 @@
 import React, { useState } from 'react';
+import { 
+  Mail, 
+  Mailbox, 
+  Send, 
+  CheckCircle, 
+  AlertTriangle, 
+  ClipboardList, 
+  Shield, 
+  Edit, 
+  SkipForward,
+  Loader2
+} from 'lucide-react';
 import api from '../../services/api';
 
 const EmailVerification = ({ email, onSuccess }) => {
@@ -33,7 +45,7 @@ const EmailVerification = ({ email, onSuccess }) => {
         {/* Информация об email */}
         <div className="bg-gray-900 border-2 border-white p-4 mb-4">
           <div className="flex items-center justify-center gap-3">
-            <span className="text-orange-500 text-xl">📧</span>
+            <Mail className="text-orange-500" size={24} />
             <div className="text-center">
               <p className="text-gray-300 font-bold text-sm uppercase mb-1">
                 ПИСЬМО ОТПРАВЛЕНО НА:
@@ -50,7 +62,7 @@ const EmailVerification = ({ email, onSuccess }) => {
         {/* Основная инструкция */}
         <div className="bg-gray-900 border-2 border-blue-500 p-6">
           <div className="text-center">
-            <div className="text-4xl mb-4">📬</div>
+            <Mailbox className="mx-auto text-blue-500 mb-4" size={48} />
             <h3 className="text-white font-black text-xl uppercase tracking-wider mb-4">
               ПРОВЕРЬТЕ СВОЮ ПОЧТУ
             </h3>
@@ -65,7 +77,7 @@ const EmailVerification = ({ email, onSuccess }) => {
         {message && (
           <div className="bg-green-900 border-4 border-green-500 p-4">
             <div className="flex items-center gap-3">
-              <span className="text-green-500 text-xl">✅</span>
+              <CheckCircle className="text-green-500" size={20} />
               <span className="text-green-300 font-bold uppercase">{message}</span>
             </div>
           </div>
@@ -75,7 +87,7 @@ const EmailVerification = ({ email, onSuccess }) => {
         {error && (
           <div className="bg-red-900 border-4 border-red-500 p-4">
             <div className="flex items-center gap-3">
-              <span className="text-red-500 text-xl">⚠</span>
+              <AlertTriangle className="text-red-500" size={20} />
               <span className="text-red-300 font-bold uppercase">{error}</span>
             </div>
           </div>
@@ -95,11 +107,14 @@ const EmailVerification = ({ email, onSuccess }) => {
           >
             {loading ? (
               <div className="flex items-center justify-center gap-3">
-                <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                <Loader2 className="animate-spin" size={20} />
                 ОТПРАВЛЯЕМ...
               </div>
             ) : (
-              <>📤 ОТПРАВИТЬ ПОВТОРНО</>
+              <div className="flex items-center justify-center gap-2">
+                <Send size={20} />
+                ОТПРАВИТЬ ПОВТОРНО
+              </div>
             )}
           </button>
 
@@ -109,14 +124,17 @@ const EmailVerification = ({ email, onSuccess }) => {
             className="bg-orange-500 border-4 border-black text-black font-black text-lg uppercase tracking-wider py-4
                        hover:bg-orange-400 hover:scale-105 active:scale-95 transition-all duration-300 transform"
           >
-            ✅ Я ПОДТВЕРДИЛ EMAIL
+            <div className="flex items-center justify-center gap-2">
+              <CheckCircle size={20} />
+              Я ПОДТВЕРДИЛ EMAIL
+            </div>
           </button>
         </div>
 
         {/* Пошаговая инструкция */}
         <div className="bg-gray-900 border-2 border-orange-500 p-4">
           <div className="flex items-start gap-3">
-            <span className="text-orange-500 text-lg">📋</span>
+            <ClipboardList className="text-orange-500 mt-1" size={20} />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-3 text-orange-400">ЧТО ДЕЛАТЬ ДАЛЬШЕ:</p>
               <ol className="text-xs normal-case space-y-2 list-decimal list-inside">
@@ -144,7 +162,7 @@ const EmailVerification = ({ email, onSuccess }) => {
         {/* Проблемы с получением */}
         <div className="bg-gray-900 border-2 border-yellow-500 p-4">
           <div className="flex items-start gap-3">
-            <span className="text-yellow-500 text-lg">⚠️</span>
+            <AlertTriangle className="text-yellow-500 mt-1" size={20} />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-2 text-yellow-400">НЕ ПОЛУЧИЛИ ПИСЬМО?</p>
               <ul className="text-xs normal-case space-y-1">
@@ -174,20 +192,26 @@ const EmailVerification = ({ email, onSuccess }) => {
           {/* Изменить email */}
           <button className="bg-gray-900 border-2 border-white text-white font-black text-sm uppercase tracking-wider py-3 px-4
                            hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105">
-            ✏️ ИЗМЕНИТЬ EMAIL
+            <div className="flex items-center justify-center gap-2">
+              <Edit size={16} />
+              ИЗМЕНИТЬ EMAIL
+            </div>
           </button>
 
           {/* Пропустить пока */}
           <button className="bg-gray-800 border-2 border-gray-600 text-gray-400 font-black text-sm uppercase tracking-wider py-3 px-4
                            hover:bg-gray-700 hover:border-gray-500 transition-all duration-300 transform hover:scale-105">
-            ⏭️ ПРОПУСТИТЬ ПОКА
+            <div className="flex items-center justify-center gap-2">
+              <SkipForward size={16} />
+              ПРОПУСТИТЬ ПОКА
+            </div>
           </button>
         </div>
 
         {/* Безопасность */}
         <div className="bg-gray-900 border-2 border-green-500 p-4">
           <div className="flex items-start gap-3">
-            <span className="text-green-500 text-lg">🛡️</span>
+            <Shield className="text-green-500 mt-1" size={20} />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-1 text-green-400">ЗАЧЕМ ЭТО НУЖНО?</p>
               <p className="text-xs normal-case">

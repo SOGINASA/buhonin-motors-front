@@ -1,4 +1,15 @@
 import React from 'react';
+import { 
+  Crown, 
+  Star, 
+  TrendingUp, 
+  AlertTriangle, 
+  BarChart3, 
+  Zap, 
+  Gem, 
+  Settings, 
+  HelpCircle 
+} from 'lucide-react';
 import { usePayments } from '../../hooks/api/usePayments';
 
 const ServicesPage = () => {
@@ -18,7 +29,7 @@ const ServicesPage = () => {
         'Выделение цветом': 'Оранжевая рамка',
         'Приоритет в рекомендациях': 'Больше просмотров'
       },
-      icon: '👑',
+      icon: Crown,
       popular: true
     },
     {
@@ -32,7 +43,7 @@ const ServicesPage = () => {
         'Цветная рамка': 'Привлекает внимание',
         'Увеличенный размер': '+20% к размеру карточки'
       },
-      icon: '🌟',
+      icon: Star,
       popular: false
     },
     {
@@ -46,7 +57,7 @@ const ServicesPage = () => {
         'Обновление даты': 'Как новое объявление',
         'Повышение в выдаче': 'Выше других объявлений'
       },
-      icon: '📈',
+      icon: TrendingUp,
       popular: false
     },
     {
@@ -60,7 +71,7 @@ const ServicesPage = () => {
         'Красная метка "СРОЧНО"': 'Привлекает внимание',
         'Приоритет в мобильном': 'Показ в специальном разделе'
       },
-      icon: '🚨',
+      icon: AlertTriangle,
       popular: false
     }
   ];
@@ -111,8 +122,9 @@ const ServicesPage = () => {
 
         {/* Статистика эффективности */}
         <div className="mb-12 bg-black border-4 border-white p-6">
-          <h2 className="text-white font-black text-2xl uppercase tracking-wider mb-6 text-center">
-            📊 ЭФФЕКТИВНОСТЬ ПРОДВИЖЕНИЯ
+          <h2 className="text-white font-black text-2xl uppercase tracking-wider mb-6 text-center flex items-center justify-center">
+            <BarChart3 className="w-8 h-8 mr-3" />
+            ЭФФЕКТИВНОСТЬ ПРОДВИЖЕНИЯ
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-green-900 border-2 border-green-500 p-4 text-center">
@@ -132,91 +144,99 @@ const ServicesPage = () => {
 
         {/* Сетка услуг */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
-          {mockServices.map((service) => (
-            <div key={service.service_id} className="bg-black border-4 border-white p-6 relative hover:border-orange-500 transition-colors duration-300 group">
-              {/* Популярная метка */}
-              {service.popular && (
-                <div className="absolute -top-2 -right-2 bg-red-600 border-2 border-black px-3 py-1 transform rotate-12">
-                  <span className="text-white font-black text-xs uppercase">ХИТ</span>
-                </div>
-              )}
-
-              {/* Заголовок услуги */}
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-3xl">{service.icon}</span>
-                <h3 className="text-white font-black text-xl uppercase tracking-wider">
-                  {service.service_name}
-                </h3>
-              </div>
-
-              {/* Описание */}
-              <p className="text-gray-300 font-bold mb-6 text-sm leading-relaxed">
-                {service.description}
-              </p>
-
-              {/* Цена */}
-              <div className="bg-orange-500 border-4 border-black p-4 mb-6 text-center">
-                <div className="text-black font-black text-3xl mb-1">
-                  {formatPrice(service.price, service.currency_code)}
-                </div>
-                {service.duration_days && (
-                  <div className="text-black font-bold text-sm uppercase">
-                    НА {service.duration_days} ДНЕЙ
+          {mockServices.map((service) => {
+            const IconComponent = service.icon;
+            return (
+              <div key={service.service_id} className="bg-black border-4 border-white p-6 relative hover:border-orange-500 transition-colors duration-300 group">
+                {/* Популярная метка */}
+                {service.popular && (
+                  <div className="absolute -top-2 -right-2 bg-red-600 border-2 border-black px-3 py-1 transform rotate-12">
+                    <span className="text-white font-black text-xs uppercase">ХИТ</span>
                   </div>
                 )}
-              </div>
 
-              {/* Возможности */}
-              {service.features && Object.keys(service.features).length > 0 && (
-                <div className="mb-6 bg-gray-900 border-2 border-gray-600 p-4">
-                  <h4 className="text-orange-500 font-black text-sm uppercase tracking-wider mb-3">
-                    ⚡ ВОЗМОЖНОСТИ:
-                  </h4>
-                  <ul className="space-y-2">
-                    {Object.entries(service.features).map(([key, value], index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm">
-                        <span className="text-orange-500 font-black">●</span>
-                        <div>
-                          <span className="text-white font-bold">{key}:</span>
-                          <span className="text-gray-400 ml-1">{value}</span>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                {/* Заголовок услуги */}
+                <div className="flex items-center gap-3 mb-4">
+                  <IconComponent className="w-8 h-8 text-orange-500" />
+                  <h3 className="text-white font-black text-xl uppercase tracking-wider">
+                    {service.service_name}
+                  </h3>
                 </div>
-              )}
 
-              {/* Кнопка покупки */}
-              <button
-                onClick={() => handleBuyService(service)}
-                disabled={promoteListing?.isLoading}
-                className={`w-full py-4 font-black text-lg uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 active:scale-95
-                  ${promoteListing?.isLoading
-                    ? 'bg-gray-800 border-gray-600 text-gray-400 cursor-not-allowed'
-                    : 'bg-white border-black text-black hover:bg-orange-400 hover:border-orange-500'
-                  }`}
-              >
-                {promoteListing?.isLoading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-                    ОБРАБОТКА...
+                {/* Описание */}
+                <p className="text-gray-300 font-bold mb-6 text-sm leading-relaxed">
+                  {service.description}
+                </p>
+
+                {/* Цена */}
+                <div className="bg-orange-500 border-4 border-black p-4 mb-6 text-center">
+                  <div className="text-black font-black text-3xl mb-1">
+                    {formatPrice(service.price, service.currency_code)}
                   </div>
-                ) : (
-                  <>💎 ПРИОБРЕСТИ</>
-                )}
-              </button>
+                  {service.duration_days && (
+                    <div className="text-black font-bold text-sm uppercase">
+                      НА {service.duration_days} ДНЕЙ
+                    </div>
+                  )}
+                </div>
 
-              {/* Декоративные элементы */}
-              <div className="absolute top-2 right-2 w-3 h-3 bg-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="absolute bottom-2 left-2 w-6 h-1 bg-orange-500"></div>
-            </div>
-          ))}
+                {/* Возможности */}
+                {service.features && Object.keys(service.features).length > 0 && (
+                  <div className="mb-6 bg-gray-900 border-2 border-gray-600 p-4">
+                    <h4 className="text-orange-500 font-black text-sm uppercase tracking-wider mb-3 flex items-center">
+                      <Zap className="w-4 h-4 mr-2" />
+                      ВОЗМОЖНОСТИ:
+                    </h4>
+                    <ul className="space-y-2">
+                      {Object.entries(service.features).map(([key, value], index) => (
+                        <li key={index} className="flex items-start gap-2 text-sm">
+                          <span className="text-orange-500 font-black">●</span>
+                          <div>
+                            <span className="text-white font-bold">{key}:</span>
+                            <span className="text-gray-400 ml-1">{value}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Кнопка покупки */}
+                <button
+                  onClick={() => handleBuyService(service)}
+                  disabled={promoteListing?.isLoading}
+                  className={`w-full py-4 font-black text-lg uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2
+                    ${promoteListing?.isLoading
+                      ? 'bg-gray-800 border-gray-600 text-gray-400 cursor-not-allowed'
+                      : 'bg-white border-black text-black hover:bg-orange-400 hover:border-orange-500'
+                    }`}
+                >
+                  {promoteListing?.isLoading ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                      ОБРАБОТКА...
+                    </>
+                  ) : (
+                    <>
+                      <Gem className="w-5 h-5" />
+                      ПРИОБРЕСТИ
+                    </>
+                  )}
+                </button>
+
+                {/* Декоративные элементы */}
+                <div className="absolute top-2 right-2 w-3 h-3 bg-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute bottom-2 left-2 w-6 h-1 bg-orange-500"></div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Как это работает */}
         <div className="mb-12 bg-black border-4 border-blue-500 p-6">
-          <h2 className="text-white font-black text-2xl uppercase tracking-wider mb-6 text-center">
-            🔧 КАК ЭТО РАБОТАЕТ
+          <h2 className="text-white font-black text-2xl uppercase tracking-wider mb-6 text-center flex items-center justify-center">
+            <Settings className="w-8 h-8 mr-3" />
+            КАК ЭТО РАБОТАЕТ
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
@@ -252,8 +272,9 @@ const ServicesPage = () => {
 
         {/* FAQ */}
         <div className="bg-black border-4 border-gray-600 p-6">
-          <h2 className="text-white font-black text-2xl uppercase tracking-wider mb-6 text-center">
-            ❓ ЧАСТЫЕ ВОПРОСЫ
+          <h2 className="text-white font-black text-2xl uppercase tracking-wider mb-6 text-center flex items-center justify-center">
+            <HelpCircle className="w-8 h-8 mr-3" />
+            ЧАСТЫЕ ВОПРОСЫ
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-gray-900 border-2 border-gray-600 p-4">

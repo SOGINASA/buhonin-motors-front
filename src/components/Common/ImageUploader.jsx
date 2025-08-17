@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Lightbulb } from 'lucide-react';
 import api from '../../services/api';
 
 const ImageUploader = ({ onUpload, multiple = true, maxFiles = 10 }) => {
@@ -208,7 +209,7 @@ const ImageUploader = ({ onUpload, multiple = true, maxFiles = 10 }) => {
           {/* Инфо блок */}
           <div className="mt-4 p-4 bg-gray-900 border-2 border-orange-500">
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-orange-500 font-black">💡</span>
+              <Lightbulb className="w-4 h-4 text-orange-500" />
               <span className="text-white font-bold">
                 ПЕРВОЕ ФОТО БУДЕТ ИСПОЛЬЗОВАНО КАК ГЛАВНОЕ
               </span>

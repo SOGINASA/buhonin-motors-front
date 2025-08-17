@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
 // import { useParams, useNavigate } from 'react-router-dom';
+import { 
+  CreditCard, 
+  Building2, 
+  Wallet, 
+  Gem, 
+  Clock, 
+  DollarSign, 
+  Shield, 
+  FileText, 
+  Check 
+} from 'lucide-react';
 import { usePayments } from '../../hooks/api/usePayments';
 
 const PaymentPage = () => {
@@ -44,21 +55,21 @@ const PaymentPage = () => {
     { 
       value: 'card', 
       label: 'БАНКОВСКАЯ КАРТА', 
-      icon: '💳', 
+      icon: CreditCard, 
       description: 'Visa, MasterCard, МИР',
       popular: true 
     },
     { 
       value: 'kaspi', 
       label: 'KASPI PAY', 
-      icon: '🏦', 
+      icon: Building2, 
       description: 'Быстрая оплата через Kaspi',
       popular: true 
     },
     { 
       value: 'qiwi', 
       label: 'QIWI КОШЕЛЕК', 
-      icon: '🔶', 
+      icon: Wallet, 
       description: 'Оплата через QIWI',
       popular: false 
     }
@@ -85,7 +96,7 @@ const PaymentPage = () => {
         <div className="mb-8">
           <div className="bg-black border-4 border-white p-6 relative">
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl">💎</span>
+              <Gem className="w-8 h-8 text-orange-500" />
               <h2 className="text-white font-black text-xl uppercase tracking-wider">
                 ДЕТАЛИ УСЛУГИ
               </h2>
@@ -111,8 +122,9 @@ const PaymentPage = () => {
               {/* Срок действия */}
               {service.duration_days && (
                 <div className="mt-4 bg-blue-900 border-2 border-blue-500 p-3 text-center">
-                  <span className="text-blue-400 font-black text-sm uppercase tracking-wider">
-                    ⏰ СРОК ДЕЙСТВИЯ: {service.duration_days} ДНЕЙ
+                  <span className="text-blue-400 font-black text-sm uppercase tracking-wider flex items-center justify-center">
+                    <Clock className="w-4 h-4 mr-2" />
+                    СРОК ДЕЙСТВИЯ: {service.duration_days} ДНЕЙ
                   </span>
                 </div>
               )}
@@ -127,7 +139,7 @@ const PaymentPage = () => {
         <div className="mb-8">
           <div className="bg-black border-4 border-white p-6">
             <div className="flex items-center gap-3 mb-6">
-              <span className="text-2xl">💳</span>
+              <CreditCard className="w-8 h-8 text-orange-500" />
               <h2 className="text-white font-black text-xl uppercase tracking-wider">
                 СПОСОБ ОПЛАТЫ
               </h2>
@@ -135,56 +147,61 @@ const PaymentPage = () => {
             </div>
 
             <div className="space-y-4">
-              {paymentMethods.map((method) => (
-                <div key={method.value} className="relative">
-                  <input
-                    type="radio"
-                    id={method.value}
-                    value={method.value}
-                    checked={paymentMethod === method.value}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="sr-only"
-                  />
-                  <label
-                    htmlFor={method.value}
-                    className={`block p-4 border-4 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                      paymentMethod === method.value
-                        ? 'bg-orange-500 border-black text-black'
-                        : 'bg-gray-900 border-gray-600 text-white hover:border-orange-500'
-                    }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <span className="text-2xl">{method.icon}</span>
-                      <div className="flex-1">
-                        <div className="font-black text-lg uppercase tracking-wider flex items-center gap-2">
-                          {method.label}
-                          {method.popular && (
-                            <span className="bg-green-600 text-white text-xs px-2 py-1 font-black uppercase">
-                              ПОПУЛЯРНО
-                            </span>
+              {paymentMethods.map((method) => {
+                const IconComponent = method.icon;
+                return (
+                  <div key={method.value} className="relative">
+                    <input
+                      type="radio"
+                      id={method.value}
+                      value={method.value}
+                      checked={paymentMethod === method.value}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="sr-only"
+                    />
+                    <label
+                      htmlFor={method.value}
+                      className={`block p-4 border-4 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                        paymentMethod === method.value
+                          ? 'bg-orange-500 border-black text-black'
+                          : 'bg-gray-900 border-gray-600 text-white hover:border-orange-500'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <IconComponent className={`w-8 h-8 ${
+                          paymentMethod === method.value ? 'text-black' : 'text-white'
+                        }`} />
+                        <div className="flex-1">
+                          <div className="font-black text-lg uppercase tracking-wider flex items-center gap-2">
+                            {method.label}
+                            {method.popular && (
+                              <span className="bg-green-600 text-white text-xs px-2 py-1 font-black uppercase">
+                                ПОПУЛЯРНО
+                              </span>
+                            )}
+                          </div>
+                          <div className={`text-sm font-bold ${
+                            paymentMethod === method.value ? 'text-black' : 'text-gray-400'
+                          }`}>
+                            {method.description}
+                          </div>
+                        </div>
+                        <div className={`w-6 h-6 border-4 rounded-full ${
+                          paymentMethod === method.value
+                            ? 'bg-black border-black'
+                            : 'border-gray-600'
+                        }`}>
+                          {paymentMethod === method.value && (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Check className="w-4 h-4 text-orange-500" />
+                            </div>
                           )}
                         </div>
-                        <div className={`text-sm font-bold ${
-                          paymentMethod === method.value ? 'text-black' : 'text-gray-400'
-                        }`}>
-                          {method.description}
-                        </div>
                       </div>
-                      <div className={`w-6 h-6 border-4 rounded-full ${
-                        paymentMethod === method.value
-                          ? 'bg-black border-black'
-                          : 'border-gray-600'
-                      }`}>
-                        {paymentMethod === method.value && (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <span className="text-orange-500 font-black text-sm">✓</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </label>
-                </div>
-              ))}
+                    </label>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -194,19 +211,22 @@ const PaymentPage = () => {
           <button
             onClick={handlePayment}
             disabled={loading}
-            className={`w-full py-6 font-black text-xl uppercase tracking-wider border-4 transition-all duration-300 transform
+            className={`w-full py-6 font-black text-xl uppercase tracking-wider border-4 transition-all duration-300 transform flex items-center justify-center gap-3
               ${loading
                 ? 'bg-gray-800 border-gray-600 text-gray-400 cursor-not-allowed'
                 : 'bg-orange-500 border-black text-black hover:bg-orange-400 hover:scale-105 active:scale-95'
               }`}
           >
             {loading ? (
-              <div className="flex items-center justify-center gap-3">
+              <>
                 <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
                 ОБРАБОТКА...
-              </div>
+              </>
             ) : (
-              <>💰 ОПЛАТИТЬ {service.price.toLocaleString()} {service.currency_code}</>
+              <>
+                <DollarSign className="w-6 h-6" />
+                ОПЛАТИТЬ {service.price.toLocaleString()} {service.currency_code}
+              </>
             )}
           </button>
         </div>
@@ -216,7 +236,7 @@ const PaymentPage = () => {
           {/* Безопасность */}
           <div className="bg-black border-4 border-green-500 p-4">
             <div className="flex items-start gap-3">
-              <span className="text-green-500 text-lg">🛡️</span>
+              <Shield className="w-5 h-5 text-green-500 mt-1" />
               <div className="text-gray-300 text-sm">
                 <p className="font-bold uppercase mb-1 text-green-400">БЕЗОПАСНАЯ ОПЛАТА</p>
                 <p className="text-xs normal-case">
@@ -229,7 +249,7 @@ const PaymentPage = () => {
           {/* Условия */}
           <div className="bg-black border-4 border-gray-600 p-4">
             <div className="flex items-start gap-3">
-              <span className="text-gray-400 text-lg">📋</span>
+              <FileText className="w-5 h-5 text-gray-400 mt-1" />
               <div className="text-gray-400 text-xs">
                 <p className="font-bold uppercase mb-2">УСЛОВИЯ ОПЛАТЫ:</p>
                 <ul className="space-y-1 normal-case">

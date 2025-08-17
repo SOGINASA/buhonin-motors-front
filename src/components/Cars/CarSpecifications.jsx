@@ -1,4 +1,5 @@
 import React from 'react';
+import { Car, Settings, ClipboardList, XCircle } from 'lucide-react';
 
 const CarSpecifications = ({ specifications, brands, models, bodyTypes, engineTypes, transmissionTypes, driveTypes, colors }) => {
   const getBrandName = (brandId) => {
@@ -40,7 +41,7 @@ const CarSpecifications = ({ specifications, brands, models, bodyTypes, engineTy
   const specifications_groups = [
     {
       title: 'ОСНОВНЫЕ ДАННЫЕ',
-      icon: '🚗',
+      icon: Car,
       items: [
         { label: 'МАРКА', value: getBrandName(specifications.brand_id), key: 'brand' },
         { label: 'МОДЕЛЬ', value: getModelName(specifications.model_id), key: 'model' },
@@ -51,7 +52,7 @@ const CarSpecifications = ({ specifications, brands, models, bodyTypes, engineTy
     },
     {
       title: 'ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ',
-      icon: '⚙️',
+      icon: Settings,
       items: [
         { label: 'ТИП КУЗОВА', value: getBodyTypeName(specifications.body_type_id), key: 'body_type' },
         { label: 'ТИП ДВИГАТЕЛЯ', value: getEngineTypeName(specifications.engine_type_id), key: 'engine_type' },
@@ -63,7 +64,7 @@ const CarSpecifications = ({ specifications, brands, models, bodyTypes, engineTy
     },
     {
       title: 'ДОПОЛНИТЕЛЬНО',
-      icon: '📋',
+      icon: ClipboardList,
       items: [
         { label: 'ЦВЕТ', value: getColorName(specifications.color_id), key: 'color' },
         { label: 'РАСТАМОЖЕН', value: specifications.customs_cleared !== undefined ? (specifications.customs_cleared ? 'ДА' : 'НЕТ') : null, key: 'customs', boolean: true },
@@ -91,11 +92,13 @@ const CarSpecifications = ({ specifications, brands, models, bodyTypes, engineTy
           
           if (filledItems.length === 0) return null;
 
+          const IconComponent = group.icon;
+
           return (
             <div key={groupIndex} className="bg-gray-900 border-2 border-white p-6">
               {/* Заголовок группы */}
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-2xl">{group.icon}</span>
+                <IconComponent className="w-6 h-6 text-orange-500" />
                 <h4 className="text-white font-black text-lg uppercase tracking-wider">
                   {group.title}
                 </h4>
@@ -136,7 +139,9 @@ const CarSpecifications = ({ specifications, brands, models, bodyTypes, engineTy
         group.items.filter(item => item.value && item.value !== 'Не указана' && item.value !== 'Не указан').length === 0
       ) && (
         <div className="text-center py-12">
-          <div className="text-6xl mb-4">🚫</div>
+          <div className="flex justify-center mb-4">
+            <XCircle className="w-16 h-16 text-red-500" />
+          </div>
           <h4 className="text-white font-black text-xl uppercase tracking-wider mb-2">
             ХАРАКТЕРИСТИКИ НЕ УКАЗАНЫ
           </h4>

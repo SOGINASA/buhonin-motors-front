@@ -1,4 +1,16 @@
 import React, { useState } from 'react';
+import { 
+  User, 
+  Smartphone, 
+  Mail, 
+  Lock, 
+  AlertTriangle, 
+  Rocket, 
+  Shield,
+  Check,
+  X,
+  Loader2
+} from 'lucide-react';
 import { useRegister } from '../../hooks/auth/useRegister';
 
 const RegisterForm = ({ onSuccess }) => {
@@ -37,12 +49,12 @@ const RegisterForm = ({ onSuccess }) => {
   };
 
   const fields = [
-    { name: 'first_name', label: 'ИМЯ', type: 'text', required: true, icon: '👤' },
-    { name: 'last_name', label: 'ФАМИЛИЯ', type: 'text', required: true, icon: '👤' },
-    { name: 'phone_number', label: 'НОМЕР ТЕЛЕФОНА', type: 'tel', required: true, icon: '📱', placeholder: '+7 (xxx) xxx-xx-xx' },
-    { name: 'email', label: 'EMAIL', type: 'email', required: false, icon: '📧', placeholder: 'example@mail.com' },
-    { name: 'password', label: 'ПАРОЛЬ', type: 'password', required: true, icon: '🔒' },
-    { name: 'confirmPassword', label: 'ПОДТВЕРДИТЕ ПАРОЛЬ', type: 'password', required: true, icon: '🔒' }
+    { name: 'first_name', label: 'ИМЯ', type: 'text', required: true, icon: User },
+    { name: 'last_name', label: 'ФАМИЛИЯ', type: 'text', required: true, icon: User },
+    { name: 'phone_number', label: 'НОМЕР ТЕЛЕФОНА', type: 'tel', required: true, icon: Smartphone, placeholder: '+7 (xxx) xxx-xx-xx' },
+    { name: 'email', label: 'EMAIL', type: 'email', required: false, icon: Mail, placeholder: 'example@mail.com' },
+    { name: 'password', label: 'ПАРОЛЬ', type: 'password', required: true, icon: Lock },
+    { name: 'confirmPassword', label: 'ПОДТВЕРДИТЕ ПАРОЛЬ', type: 'password', required: true, icon: Lock }
   ];
 
   return (
@@ -61,54 +73,70 @@ const RegisterForm = ({ onSuccess }) => {
       <div className="space-y-6">
         {/* Поля формы */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {fields.map((field) => (
-            <div key={field.name} className={field.name === 'email' ? 'md:col-span-2' : ''}>
-              <label className="block text-white font-black text-sm uppercase tracking-wider mb-3">
-                <span className="text-orange-500">{field.icon}</span> {field.label}
-                {field.required && <span className="text-red-500 ml-1">*</span>}
-              </label>
-              
-              <div className="relative group">
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                  placeholder={field.placeholder}
-                  required={field.required}
-                  className="w-full bg-white border-4 border-black px-4 py-4 font-black text-black uppercase tracking-wide
-                             focus:outline-none focus:border-orange-500 focus:bg-orange-100
-                             hover:bg-gray-100 transition-all duration-300
-                             placeholder:text-gray-500 placeholder:normal-case"
-                />
+          {fields.map((field) => {
+            const IconComponent = field.icon;
+            return (
+              <div key={field.name} className={field.name === 'email' ? 'md:col-span-2' : ''}>
+                <label className="block text-white font-black text-sm uppercase tracking-wider mb-3">
+                  <div className="flex items-center gap-2">
+                    <IconComponent className="text-orange-500" size={18} />
+                    {field.label}
+                    {field.required && <span className="text-red-500 ml-1">*</span>}
+                  </div>
+                </label>
                 
-                {/* Декоративный элемент */}
-                <div className="absolute top-2 right-2 w-3 h-3 bg-orange-500 opacity-50 group-focus-within:opacity-100 transition-opacity"></div>
-              </div>
-
-              {/* Валидация для паролей */}
-              {field.name === 'confirmPassword' && formData.password && formData.confirmPassword && (
-                <div className={`mt-2 p-2 border-2 ${
-                  formData.password === formData.confirmPassword 
-                    ? 'border-green-500 bg-green-900/20' 
-                    : 'border-red-500 bg-red-900/20'
-                }`}>
-                  <span className={`font-bold text-sm uppercase ${
-                    formData.password === formData.confirmPassword ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {formData.password === formData.confirmPassword ? '✓ ПАРОЛИ СОВПАДАЮТ' : '✗ ПАРОЛИ НЕ СОВПАДАЮТ'}
-                  </span>
+                <div className="relative group">
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    className="w-full bg-white border-4 border-black px-4 py-4 font-black text-black uppercase tracking-wide
+                               focus:outline-none focus:border-orange-500 focus:bg-orange-100
+                               hover:bg-gray-100 transition-all duration-300
+                               placeholder:text-gray-500 placeholder:normal-case"
+                  />
+                  
+                  {/* Декоративный элемент */}
+                  <div className="absolute top-2 right-2 w-3 h-3 bg-orange-500 opacity-50 group-focus-within:opacity-100 transition-opacity"></div>
                 </div>
-              )}
-            </div>
-          ))}
+
+                {/* Валидация для паролей */}
+                {field.name === 'confirmPassword' && formData.password && formData.confirmPassword && (
+                  <div className={`mt-2 p-2 border-2 ${
+                    formData.password === formData.confirmPassword 
+                      ? 'border-green-500 bg-green-900/20' 
+                      : 'border-red-500 bg-red-900/20'
+                  }`}>
+                    <div className={`flex items-center gap-2 font-bold text-sm uppercase ${
+                      formData.password === formData.confirmPassword ? 'text-green-400' : 'text-red-400'
+                    }`}>
+                      {formData.password === formData.confirmPassword ? (
+                        <>
+                          <Check size={16} />
+                          ПАРОЛИ СОВПАДАЮТ
+                        </>
+                      ) : (
+                        <>
+                          <X size={16} />
+                          ПАРОЛИ НЕ СОВПАДАЮТ
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {/* Ошибка */}
         {error && (
           <div className="bg-red-900 border-4 border-red-500 p-4">
             <div className="flex items-center gap-3">
-              <span className="text-red-500 text-xl">⚠</span>
+              <AlertTriangle className="text-red-500" size={20} />
               <span className="text-red-300 font-bold uppercase">{error}</span>
             </div>
           </div>
@@ -146,18 +174,21 @@ const RegisterForm = ({ onSuccess }) => {
         >
           {loading ? (
             <div className="flex items-center justify-center gap-3">
-              <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              <Loader2 className="animate-spin" size={24} />
               РЕГИСТРИРУЕМСЯ...
             </div>
           ) : (
-            <>🚀 ЗАРЕГИСТРИРОВАТЬСЯ</>
+            <div className="flex items-center justify-center gap-2">
+              <Rocket size={24} />
+              ЗАРЕГИСТРИРОВАТЬСЯ
+            </div>
           )}
         </button>
 
         {/* Информация о конфиденциальности */}
         <div className="bg-gray-900 border-2 border-gray-600 p-4">
           <div className="flex items-start gap-3">
-            <span className="text-orange-500 text-lg">🔒</span>
+            <Shield className="text-orange-500 mt-1" size={20} />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-1">ВАШИ ДАННЫЕ ЗАЩИЩЕНЫ</p>
               <p className="text-xs normal-case">

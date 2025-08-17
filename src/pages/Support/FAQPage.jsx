@@ -1,5 +1,22 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
+import { 
+  BarChart3,
+  Search,
+  Folder,
+  FileText,
+  CreditCard,
+  User,
+  Shield,
+  Wrench,
+  HelpCircle,
+  Eye,
+  ThumbsUp,
+  ThumbsDown,
+  Frown,
+  Mail,
+  Phone
+} from 'lucide-react';
 import api from '../../services/api';
 
 const FAQPage = () => {
@@ -82,13 +99,13 @@ const FAQPage = () => {
 
   const getCategoryIcon = (category) => {
     const icons = {
-      'Объявления': '📋',
-      'Платежи': '💳',
-      'Аккаунт': '👤',
-      'Безопасность': '🛡️',
-      'Техподдержка': '🔧'
+      'Объявления': FileText,
+      'Платежи': CreditCard,
+      'Аккаунт': User,
+      'Безопасность': Shield,
+      'Техподдержка': Wrench
     };
-    return icons[category] || '❓';
+    return icons[category] || HelpCircle;
   };
 
   if (isLoading) {
@@ -123,8 +140,9 @@ const FAQPage = () => {
 
         {/* Статистика */}
         <div className="mb-8 bg-black border-4 border-white p-6">
-          <h2 className="text-white font-black text-xl uppercase tracking-wider mb-6 text-center">
-            📊 СТАТИСТИКА FAQ
+          <h2 className="text-white font-black text-xl uppercase tracking-wider mb-6 text-center flex items-center justify-center gap-3">
+            <BarChart3 className="w-6 h-6 text-orange-500" />
+            СТАТИСТИКА FAQ
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-blue-900 border-2 border-blue-500 p-4 text-center">
@@ -148,7 +166,8 @@ const FAQPage = () => {
         <div className="mb-8">
           <div className="bg-black border-4 border-white p-6">
             <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">🔍</span> ПОИСК ПО ВОПРОСАМ:
+              <Search className="inline-block w-4 h-4 mr-2 text-orange-500" />
+              ПОИСК ПО ВОПРОСАМ:
             </label>
             
             <div className="relative group">
@@ -165,7 +184,7 @@ const FAQPage = () => {
               
               {/* Иконка поиска */}
               <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                <span className="text-black text-xl">🔍</span>
+                <Search className="w-6 h-6 text-black" />
               </div>
               
               {/* Декоративный элемент */}
@@ -178,23 +197,28 @@ const FAQPage = () => {
         <div className="mb-8">
           <div className="bg-black border-4 border-white p-6">
             <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">📂</span> КАТЕГОРИИ:
+              <Folder className="inline-block w-4 h-4 mr-2 text-orange-500" />
+              КАТЕГОРИИ:
             </label>
             
             <div className="flex flex-wrap gap-3">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105
-                    ${selectedCategory === category
-                      ? 'bg-orange-500 border-black text-black'
-                      : 'bg-gray-900 border-gray-600 text-white hover:border-orange-500'
-                    }`}
-                >
-                  {category === 'all' ? '📋 ВСЕ' : `${getCategoryIcon(category)} ${category.toUpperCase()}`}
-                </button>
-              ))}
+              {categories.map((category) => {
+                const IconComponent = category === 'all' ? FileText : getCategoryIcon(category);
+                return (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-4 py-2 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 flex items-center gap-2
+                      ${selectedCategory === category
+                        ? 'bg-orange-500 border-black text-black'
+                        : 'bg-gray-900 border-gray-600 text-white hover:border-orange-500'
+                      }`}
+                  >
+                    <IconComponent className="w-4 h-4" />
+                    {category === 'all' ? 'ВСЕ' : category.toUpperCase()}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -202,7 +226,9 @@ const FAQPage = () => {
         {/* Список FAQ */}
         {filteredFAQ.length === 0 ? (
           <div className="bg-black border-4 border-gray-600 p-12 text-center">
-            <div className="text-6xl mb-6">🤔</div>
+            <div className="flex justify-center mb-6">
+              <HelpCircle className="w-16 h-16 text-gray-400" />
+            </div>
             <h3 className="text-white font-black text-2xl uppercase tracking-wider mb-4">
               {searchTerm ? 'НИЧЕГО НЕ НАЙДЕНО' : 'FAQ ПОКА НЕ ЗАПОЛНЕН'}
             </h3>
@@ -212,92 +238,101 @@ const FAQPage = () => {
           </div>
         ) : (
           <div className="space-y-4 mb-8">
-            {filteredFAQ.map((item, index) => (
-              <div key={item.faq_id} className="bg-black border-4 border-white hover:border-orange-500 transition-colors duration-300 relative group">
-                {/* Заголовок вопроса */}
-                <div
-                  onClick={() => toggleExpanded(item.faq_id)}
-                  className={`p-6 cursor-pointer transition-all duration-300 ${
-                    expandedItems.has(item.faq_id) ? 'bg-gray-900' : 'bg-black hover:bg-gray-900'
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 flex-1">
-                      {/* Номер вопроса */}
-                      <div className="bg-orange-500 border-2 border-black w-12 h-12 flex items-center justify-center">
-                        <span className="text-black font-black text-lg">{index + 1}</span>
+            {filteredFAQ.map((item, index) => {
+              const IconComponent = getCategoryIcon(item.category);
+              return (
+                <div key={item.faq_id} className="bg-black border-4 border-white hover:border-orange-500 transition-colors duration-300 relative group">
+                  {/* Заголовок вопроса */}
+                  <div
+                    onClick={() => toggleExpanded(item.faq_id)}
+                    className={`p-6 cursor-pointer transition-all duration-300 ${
+                      expandedItems.has(item.faq_id) ? 'bg-gray-900' : 'bg-black hover:bg-gray-900'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4 flex-1">
+                        {/* Номер вопроса */}
+                        <div className="bg-orange-500 border-2 border-black w-12 h-12 flex items-center justify-center">
+                          <span className="text-black font-black text-lg">{index + 1}</span>
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h4 className="text-white font-black text-lg uppercase tracking-wide mb-2">
+                            {item.question}
+                          </h4>
+                          
+                          {/* Метаинформация */}
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="text-orange-500 font-bold flex items-center gap-1">
+                              <IconComponent className="w-4 h-4" />
+                              {item.category}
+                            </span>
+                            <span className="text-gray-400 font-bold flex items-center gap-1">
+                              <Eye className="w-4 h-4" />
+                              {item.views} просмотров
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Кнопка раскрытия */}
+                      <div className={`w-12 h-12 border-4 border-orange-500 flex items-center justify-center transition-transform duration-300 ${
+                        expandedItems.has(item.faq_id) ? 'rotate-180' : ''
+                      }`}>
+                        <span className="text-orange-500 font-black text-2xl">
+                          {expandedItems.has(item.faq_id) ? '−' : '+'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Ответ */}
+                  {expandedItems.has(item.faq_id) && (
+                    <div className="border-t-4 border-orange-500 bg-gray-900 p-6">
+                      <div className="bg-black border-2 border-gray-600 p-4">
+                        <div 
+                          className="text-gray-300 leading-relaxed"
+                          dangerouslySetInnerHTML={{ __html: item.answer }}
+                          style={{
+                            fontSize: '14px',
+                            lineHeight: '1.6'
+                          }}
+                        />
                       </div>
                       
-                      <div className="flex-1">
-                        <h4 className="text-white font-black text-lg uppercase tracking-wide mb-2">
-                          {item.question}
-                        </h4>
-                        
-                        {/* Метаинформация */}
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-orange-500 font-bold">
-                            {getCategoryIcon(item.category)} {item.category}
-                          </span>
-                          <span className="text-gray-400 font-bold">
-                            👁️ {item.views} просмотров
-                          </span>
+                      {/* Была ли информация полезной */}
+                      <div className="mt-4 flex items-center justify-between bg-gray-800 border-2 border-gray-600 p-3">
+                        <span className="text-gray-400 font-bold text-sm uppercase">
+                          Была ли информация полезной?
+                        </span>
+                        <div className="flex gap-2">
+                          <button className="px-3 py-1 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase border-2 border-black transition-colors flex items-center gap-1">
+                            <ThumbsUp className="w-3 h-3" />
+                            ДА
+                          </button>
+                          <button className="px-3 py-1 bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase border-2 border-black transition-colors flex items-center gap-1">
+                            <ThumbsDown className="w-3 h-3" />
+                            НЕТ
+                          </button>
                         </div>
                       </div>
                     </div>
+                  )}
 
-                    {/* Кнопка раскрытия */}
-                    <div className={`w-12 h-12 border-4 border-orange-500 flex items-center justify-center transition-transform duration-300 ${
-                      expandedItems.has(item.faq_id) ? 'rotate-180' : ''
-                    }`}>
-                      <span className="text-orange-500 font-black text-2xl">
-                        {expandedItems.has(item.faq_id) ? '−' : '+'}
-                      </span>
-                    </div>
-                  </div>
+                  {/* Декоративные элементы */}
+                  <div className="absolute top-2 right-2 w-3 h-3 bg-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
-
-                {/* Ответ */}
-                {expandedItems.has(item.faq_id) && (
-                  <div className="border-t-4 border-orange-500 bg-gray-900 p-6">
-                    <div className="bg-black border-2 border-gray-600 p-4">
-                      <div 
-                        className="text-gray-300 leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: item.answer }}
-                        style={{
-                          fontSize: '14px',
-                          lineHeight: '1.6'
-                        }}
-                      />
-                    </div>
-                    
-                    {/* Была ли информация полезной */}
-                    <div className="mt-4 flex items-center justify-between bg-gray-800 border-2 border-gray-600 p-3">
-                      <span className="text-gray-400 font-bold text-sm uppercase">
-                        Была ли информация полезной?
-                      </span>
-                      <div className="flex gap-2">
-                        <button className="px-3 py-1 bg-green-600 hover:bg-green-500 text-white font-black text-xs uppercase border-2 border-black transition-colors">
-                          👍 ДА
-                        </button>
-                        <button className="px-3 py-1 bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase border-2 border-black transition-colors">
-                          👎 НЕТ
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Декоративные элементы */}
-                <div className="absolute top-2 right-2 w-3 h-3 bg-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
         {/* Блок "Не нашли ответ" */}
         <div className="bg-black border-4 border-orange-500 p-8">
           <div className="text-center">
-            <div className="text-4xl mb-4">🤷‍♂️</div>
+            <div className="flex justify-center mb-4">
+              <Frown className="w-12 h-12 text-orange-500" />
+            </div>
             <h3 className="text-white font-black text-2xl uppercase tracking-wider mb-4">
               НЕ НАШЛИ ОТВЕТ НА СВОЙ ВОПРОС?
             </h3>
@@ -309,17 +344,19 @@ const FAQPage = () => {
               <button
                 onClick={() => window.location.href = '/support/create-ticket'}
                 className="bg-orange-500 border-4 border-black text-black font-black px-8 py-4 text-lg uppercase tracking-wider
-                         hover:bg-orange-400 transition-all duration-300 transform hover:scale-105"
+                         hover:bg-orange-400 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
               >
-                ✉️ СОЗДАТЬ ОБРАЩЕНИЕ
+                <Mail className="w-5 h-5" />
+                СОЗДАТЬ ОБРАЩЕНИЕ
               </button>
               
               <button
                 onClick={() => window.location.href = '/support'}
                 className="bg-white border-4 border-black text-black font-black px-8 py-4 text-lg uppercase tracking-wider
-                         hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
+                         hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
               >
-                📞 ДРУГИЕ СПОСОБЫ СВЯЗИ
+                <Phone className="w-5 h-5" />
+                ДРУГИЕ СПОСОБЫ СВЯЗИ
               </button>
             </div>
           </div>

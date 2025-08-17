@@ -1,4 +1,5 @@
 import React from 'react';
+import { AlertTriangle } from 'lucide-react';
 import { useCars } from '../../hooks/api/useCars';
 
 const ModelSelector = ({ brandId, value, onChange, placeholder = "Выберите модель" }) => {
@@ -66,7 +67,7 @@ const ModelSelector = ({ brandId, value, onChange, placeholder = "Выберит
       {!brandId && (
         <div className="mt-3 p-3 bg-gray-800 border-2 border-gray-600">
           <div className="flex items-center gap-2">
-            <span className="text-gray-400 font-black">⚠</span>
+            <AlertTriangle className="w-4 h-4 text-gray-400" />
             <span className="text-gray-400 font-bold text-xs uppercase tracking-wide">
               СНАЧАЛА ВЫБЕРИТЕ МАРКУ АВТОМОБИЛЯ
             </span>

@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-query';
+import { 
+  Folder, 
+  AlertTriangle, 
+  Edit3, 
+  FileText, 
+  Lightbulb, 
+  AlertCircle, 
+  Rocket, 
+  Clock,
+  Circle,
+  Square
+} from 'lucide-react';
 import api from '../../services/api';
 
 const CreateTicketPage = () => {
@@ -64,10 +76,10 @@ const CreateTicketPage = () => {
   };
 
   const priorityOptions = [
-    { value: 'low', label: 'НИЗКИЙ', icon: '🟢', description: 'Обычный вопрос' },
-    { value: 'medium', label: 'СРЕДНИЙ', icon: '🟡', description: 'Требует внимания' },
-    { value: 'high', label: 'ВЫСОКИЙ', icon: '🟠', description: 'Срочный вопрос' },
-    { value: 'critical', label: 'КРИТИЧЕСКИЙ', icon: '🔴', description: 'Критическая проблема' }
+    { value: 'low', label: 'НИЗКИЙ', icon: Circle, color: 'text-green-500', description: 'Обычный вопрос' },
+    { value: 'medium', label: 'СРЕДНИЙ', icon: Circle, color: 'text-yellow-500', description: 'Требует внимания' },
+    { value: 'high', label: 'ВЫСОКИЙ', icon: Circle, color: 'text-orange-500', description: 'Срочный вопрос' },
+    { value: 'critical', label: 'КРИТИЧЕСКИЙ', icon: Circle, color: 'text-red-500', description: 'Критическая проблема' }
   ];
 
   const getProgressPercentage = () => {
@@ -121,7 +133,8 @@ const CreateTicketPage = () => {
           {/* Категория */}
           <div className="bg-black border-4 border-white p-6">
             <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">📂</span> КАТЕГОРИЯ ПРОБЛЕМЫ:
+              <Folder className="inline-block w-4 h-4 mr-2 text-orange-500" />
+              КАТЕГОРИЯ ПРОБЛЕМЫ:
             </label>
             
             <div className="relative group">
@@ -154,7 +167,8 @@ const CreateTicketPage = () => {
           {/* Приоритет */}
           <div className="bg-black border-4 border-white p-6">
             <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">🚨</span> ПРИОРИТЕТ ОБРАЩЕНИЯ:
+              <AlertTriangle className="inline-block w-4 h-4 mr-2 text-orange-500" />
+              ПРИОРИТЕТ ОБРАЩЕНИЯ:
             </label>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -178,7 +192,7 @@ const CreateTicketPage = () => {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xl">{option.icon}</span>
+                      <option.icon className={`w-6 h-6 ${option.color}`} fill="currentColor" />
                       <div>
                         <div className="font-black text-lg uppercase tracking-wider">
                           {option.label}
@@ -199,7 +213,8 @@ const CreateTicketPage = () => {
           {/* Тема обращения */}
           <div className="bg-black border-4 border-white p-6">
             <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">✏️</span> ТЕМА ОБРАЩЕНИЯ <span className="text-red-500">*</span>
+              <Edit3 className="inline-block w-4 h-4 mr-2 text-orange-500" />
+              ТЕМА ОБРАЩЕНИЯ <span className="text-red-500">*</span>
             </label>
             
             <div className="relative group">
@@ -229,7 +244,8 @@ const CreateTicketPage = () => {
           {/* Описание проблемы */}
           <div className="bg-black border-4 border-white p-6">
             <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">📝</span> ПОДРОБНОЕ ОПИСАНИЕ <span className="text-red-500">*</span>
+              <FileText className="inline-block w-4 h-4 mr-2 text-orange-500" />
+              ПОДРОБНОЕ ОПИСАНИЕ <span className="text-red-500">*</span>
             </label>
             
             <div className="relative group">
@@ -251,8 +267,9 @@ const CreateTicketPage = () => {
 
             {/* Подсказки */}
             <div className="mt-4 bg-blue-900 border-2 border-blue-500 p-3">
-              <div className="text-blue-400 font-black text-xs uppercase tracking-wider mb-2">
-                💡 ПОДСКАЗКИ ДЛЯ БЫСТРОГО РЕШЕНИЯ:
+              <div className="text-blue-400 font-black text-xs uppercase tracking-wider mb-2 flex items-center">
+                <Lightbulb className="w-4 h-4 mr-2" />
+                ПОДСКАЗКИ ДЛЯ БЫСТРОГО РЕШЕНИЯ:
               </div>
               <ul className="text-blue-300 text-xs space-y-1">
                 <li>• Укажите номер объявления, если проблема связана с ним</li>
@@ -267,7 +284,7 @@ const CreateTicketPage = () => {
           {error && (
             <div className="bg-red-900 border-4 border-red-500 p-4">
               <div className="flex items-center gap-3">
-                <span className="text-red-500 text-xl">⚠️</span>
+                <AlertCircle className="w-6 h-6 text-red-500" />
                 <span className="text-red-300 font-bold uppercase">{error}</span>
               </div>
             </div>
@@ -290,7 +307,10 @@ const CreateTicketPage = () => {
                   СОЗДАЕМ...
                 </div>
               ) : (
-                <>🚀 СОЗДАТЬ ОБРАЩЕНИЕ</>
+                <div className="flex items-center justify-center gap-3">
+                  <Rocket className="w-6 h-6" />
+                  СОЗДАТЬ ОБРАЩЕНИЕ
+                </div>
               )}
             </button>
 
@@ -306,7 +326,7 @@ const CreateTicketPage = () => {
           {/* Информация о времени ответа */}
           <div className="bg-black border-4 border-green-500 p-4">
             <div className="flex items-start gap-3">
-              <span className="text-green-500 text-lg">⏰</span>
+              <Clock className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
               <div className="text-gray-300 text-sm">
                 <p className="font-bold uppercase mb-1 text-green-400">ВРЕМЯ ОТВЕТА:</p>
                 <ul className="text-xs normal-case space-y-1">

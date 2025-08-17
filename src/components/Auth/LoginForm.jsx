@@ -1,4 +1,14 @@
 import React, { useState } from 'react';
+import { 
+  Smartphone, 
+  Lock, 
+  AlertTriangle, 
+  Unlock, 
+  RotateCcw, 
+  UserPlus, 
+  Shield,
+  Loader2
+} from 'lucide-react';
 import { useLogin } from '../../hooks/auth/useLogin';
 
 const LoginForm = ({ onSuccess }) => {
@@ -30,14 +40,14 @@ const LoginForm = ({ onSuccess }) => {
       name: 'phone_number', 
       label: 'НОМЕР ТЕЛЕФОНА', 
       type: 'tel', 
-      icon: '📱', 
+      icon: Smartphone, 
       placeholder: '+7 (xxx) xxx-xx-xx' 
     },
     { 
       name: 'password', 
       label: 'ПАРОЛЬ', 
       type: 'password', 
-      icon: '🔒', 
+      icon: Lock, 
       placeholder: 'Введите пароль' 
     }
   ];
@@ -58,38 +68,44 @@ const LoginForm = ({ onSuccess }) => {
       <div className="space-y-6">
         {/* Поля формы */}
         <div className="space-y-6">
-          {fields.map((field) => (
-            <div key={field.name}>
-              <label className="block text-white font-black text-sm uppercase tracking-wider mb-3">
-                <span className="text-orange-500">{field.icon}</span> {field.label}
-              </label>
-              
-              <div className="relative group">
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name]}
-                  onChange={handleChange}
-                  placeholder={field.placeholder}
-                  required
-                  className="w-full bg-white border-4 border-black px-4 py-4 font-black text-black
-                             focus:outline-none focus:border-orange-500 focus:bg-orange-100
-                             hover:bg-gray-100 transition-all duration-300
-                             placeholder:text-gray-500 placeholder:font-normal"
-                />
+          {fields.map((field) => {
+            const IconComponent = field.icon;
+            return (
+              <div key={field.name}>
+                <label className="block text-white font-black text-sm uppercase tracking-wider mb-3">
+                  <div className="flex items-center gap-2">
+                    <IconComponent className="text-orange-500" size={18} />
+                    {field.label}
+                  </div>
+                </label>
                 
-                {/* Декоративный элемент */}
-                <div className="absolute top-2 right-2 w-3 h-3 bg-orange-500 opacity-50 group-focus-within:opacity-100 transition-opacity"></div>
+                <div className="relative group">
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    placeholder={field.placeholder}
+                    required
+                    className="w-full bg-white border-4 border-black px-4 py-4 font-black text-black
+                               focus:outline-none focus:border-orange-500 focus:bg-orange-100
+                               hover:bg-gray-100 transition-all duration-300
+                               placeholder:text-gray-500 placeholder:font-normal"
+                  />
+                  
+                  {/* Декоративный элемент */}
+                  <div className="absolute top-2 right-2 w-3 h-3 bg-orange-500 opacity-50 group-focus-within:opacity-100 transition-opacity"></div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Ошибка */}
         {error && (
           <div className="bg-red-900 border-4 border-red-500 p-4">
             <div className="flex items-center gap-3">
-              <span className="text-red-500 text-xl">⚠</span>
+              <AlertTriangle className="text-red-500" size={20} />
               <span className="text-red-300 font-bold uppercase">{error}</span>
             </div>
           </div>
@@ -107,11 +123,14 @@ const LoginForm = ({ onSuccess }) => {
         >
           {loading ? (
             <div className="flex items-center justify-center gap-3">
-              <div className="w-6 h-6 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              <Loader2 className="animate-spin" size={24} />
               ВХОДИМ...
             </div>
           ) : (
-            <>🔓 ВОЙТИ</>
+            <div className="flex items-center justify-center gap-2">
+              <Unlock size={24} />
+              ВОЙТИ
+            </div>
           )}
         </button>
 
@@ -120,13 +139,19 @@ const LoginForm = ({ onSuccess }) => {
           {/* Забыли пароль */}
           <button className="bg-gray-900 border-2 border-white text-white font-black text-sm uppercase tracking-wider py-3 px-4
                            hover:bg-white hover:text-black transition-all duration-300 transform hover:scale-105">
-            🔄 ЗАБЫЛИ ПАРОЛЬ?
+            <div className="flex items-center justify-center gap-2">
+              <RotateCcw size={16} />
+              ЗАБЫЛИ ПАРОЛЬ?
+            </div>
           </button>
 
           {/* Регистрация */}
           <button className="bg-white border-2 border-black text-black font-black text-sm uppercase tracking-wider py-3 px-4
                            hover:bg-orange-500 hover:border-orange-500 transition-all duration-300 transform hover:scale-105">
-            📝 РЕГИСТРАЦИЯ
+            <div className="flex items-center justify-center gap-2">
+              <UserPlus size={16} />
+              РЕГИСТРАЦИЯ
+            </div>
           </button>
         </div>
 
@@ -155,7 +180,7 @@ const LoginForm = ({ onSuccess }) => {
         {/* Безопасность */}
         <div className="bg-gray-900 border-2 border-green-500 p-4">
           <div className="flex items-start gap-3">
-            <span className="text-green-500 text-lg">🛡️</span>
+            <Shield className="text-green-500 mt-1" size={20} />
             <div className="text-gray-300 text-sm">
               <p className="font-bold uppercase mb-1 text-green-400">БЕЗОПАСНЫЙ ВХОД</p>
               <p className="text-xs normal-case">

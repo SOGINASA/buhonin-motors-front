@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { 
+  Search, 
+  Clock, 
+  CheckCircle, 
+  XCircle, 
+  InboxX, 
+  FileText, 
+  Bot, 
+  AlertTriangle, 
+  BarChart3 
+} from 'lucide-react';
 import api from '../../services/api';
 
 const ModerationPage = () => {
@@ -33,9 +44,9 @@ const ModerationPage = () => {
   };
 
   const statusOptions = [
-    { value: 'pending', label: 'ОЖИДАЕТ МОДЕРАЦИИ', icon: '⏳', color: 'text-yellow-500' },
-    { value: 'approved', label: 'ОДОБРЕНО', icon: '✅', color: 'text-green-500' },
-    { value: 'rejected', label: 'ОТКЛОНЕНО', icon: '❌', color: 'text-red-500' }
+    { value: 'pending', label: 'ОЖИДАЕТ МОДЕРАЦИИ', icon: Clock, color: 'text-yellow-500' },
+    { value: 'approved', label: 'ОДОБРЕНО', icon: CheckCircle, color: 'text-green-500' },
+    { value: 'rejected', label: 'ОТКЛОНЕНО', icon: XCircle, color: 'text-red-500' }
   ];
 
   if (isLoading) {
@@ -73,25 +84,29 @@ const ModerationPage = () => {
         {/* Фильтр статуса */}
         <div className="mb-8">
           <div className="bg-black border-4 border-white p-6">
-            <label className="block text-white font-black text-sm uppercase tracking-wider mb-4">
-              <span className="text-orange-500">🔍</span> ФИЛЬТР ПО СТАТУСУ:
+            <label className="block text-white font-black text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+              <Search className="w-4 h-4 text-orange-500" />
+              ФИЛЬТР ПО СТАТУСУ:
             </label>
             
             <div className="flex flex-wrap gap-4">
-              {statusOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => setStatusFilter(option.value)}
-                  className={`px-6 py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105
-                    ${statusFilter === option.value 
-                      ? 'bg-orange-500 border-black text-black' 
-                      : 'bg-black border-gray-600 text-white hover:border-orange-500'
-                    }`}
-                >
-                  <span className="mr-2">{option.icon}</span>
-                  {option.label}
-                </button>
-              ))}
+              {statusOptions.map((option) => {
+                const IconComponent = option.icon;
+                return (
+                  <button
+                    key={option.value}
+                    onClick={() => setStatusFilter(option.value)}
+                    className={`px-6 py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 flex items-center gap-2
+                      ${statusFilter === option.value 
+                        ? 'bg-orange-500 border-black text-black' 
+                        : 'bg-black border-gray-600 text-white hover:border-orange-500'
+                      }`}
+                  >
+                    <IconComponent className="w-4 h-4" />
+                    {option.label}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -99,7 +114,9 @@ const ModerationPage = () => {
         {/* Список элементов */}
         {items.length === 0 ? (
           <div className="bg-black border-4 border-gray-600 p-12 text-center">
-            <div className="text-6xl mb-6">📭</div>
+            <div className="flex justify-center mb-6">
+              <InboxX className="w-16 h-16 text-gray-400" />
+            </div>
             <h3 className="text-white font-black text-2xl uppercase tracking-wider mb-4">
               НЕТ ЭЛЕМЕНТОВ ДЛЯ МОДЕРАЦИИ
             </h3>
@@ -148,8 +165,9 @@ const ModerationPage = () => {
                     {/* Описание */}
                     {item.description && (
                       <div className="mb-6 bg-gray-900 border-2 border-gray-600 p-4">
-                        <div className="text-gray-400 font-black text-sm uppercase tracking-wider mb-2">
-                          📝 ОПИСАНИЕ:
+                        <div className="text-gray-400 font-black text-sm uppercase tracking-wider mb-2 flex items-center gap-2">
+                          <FileText className="w-4 h-4" />
+                          ОПИСАНИЕ:
                         </div>
                         <p className="text-white font-bold">{item.description}</p>
                       </div>
@@ -159,7 +177,7 @@ const ModerationPage = () => {
                     {item.auto_moderation_score && (
                       <div className="mb-6 bg-yellow-900 border-2 border-yellow-500 p-4">
                         <div className="flex items-center gap-3">
-                          <span className="text-yellow-500 text-lg">🤖</span>
+                          <Bot className="w-5 h-5 text-yellow-500" />
                           <div>
                             <div className="text-yellow-400 font-black text-sm uppercase tracking-wider">
                               ОЦЕНКА АВТОМОДЕРАЦИИ:
@@ -176,7 +194,7 @@ const ModerationPage = () => {
                     {item.rejection_reason && (
                       <div className="bg-red-900 border-2 border-red-500 p-4">
                         <div className="flex items-start gap-3">
-                          <span className="text-red-500 text-lg">⚠️</span>
+                          <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-1" />
                           <div>
                             <div className="text-red-400 font-black text-sm uppercase tracking-wider mb-2">
                               ПРИЧИНА ОТКЛОНЕНИЯ:
@@ -200,25 +218,27 @@ const ModerationPage = () => {
                           <button
                             onClick={() => handleModeration(item.moderation_id, 'approve')}
                             disabled={moderationMutation.isLoading}
-                            className={`w-full py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105
+                            className={`w-full py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2
                               ${moderationMutation.isLoading
                                 ? 'bg-gray-800 border-gray-600 text-gray-400 cursor-not-allowed'
                                 : 'bg-green-600 border-black text-white hover:bg-green-500'
                               }`}
                           >
-                            ✅ ОДОБРИТЬ
+                            <CheckCircle className="w-4 h-4" />
+                            ОДОБРИТЬ
                           </button>
                           
                           <button
                             onClick={() => handleModeration(item.moderation_id, 'reject')}
                             disabled={moderationMutation.isLoading}
-                            className={`w-full py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105
+                            className={`w-full py-3 font-black text-sm uppercase tracking-wider border-4 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2
                               ${moderationMutation.isLoading
                                 ? 'bg-gray-800 border-gray-600 text-gray-400 cursor-not-allowed'
                                 : 'bg-red-600 border-black text-white hover:bg-red-500'
                               }`}
                           >
-                            ❌ ОТКЛОНИТЬ
+                            <XCircle className="w-4 h-4" />
+                            ОТКЛОНИТЬ
                           </button>
                         </div>
 
@@ -247,20 +267,27 @@ const ModerationPage = () => {
         {/* Статистика */}
         <div className="mt-8 bg-black border-4 border-gray-600 p-6">
           <div className="text-center">
-            <h3 className="text-white font-black text-lg uppercase tracking-wider mb-4">
-              📊 СТАТИСТИКА МОДЕРАЦИИ
+            <h3 className="text-white font-black text-lg uppercase tracking-wider mb-4 flex items-center justify-center gap-2">
+              <BarChart3 className="w-5 h-5" />
+              СТАТИСТИКА МОДЕРАЦИИ
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gray-900 border-2 border-yellow-500 p-4">
-                <div className="text-yellow-500 font-black text-lg">⏳</div>
+                <div className="flex justify-center mb-2">
+                  <Clock className="w-6 h-6 text-yellow-500" />
+                </div>
                 <div className="text-white font-bold">В ОЖИДАНИИ</div>
               </div>
               <div className="bg-gray-900 border-2 border-green-500 p-4">
-                <div className="text-green-500 font-black text-lg">✅</div>
+                <div className="flex justify-center mb-2">
+                  <CheckCircle className="w-6 h-6 text-green-500" />
+                </div>
                 <div className="text-white font-bold">ОДОБРЕНО</div>
               </div>
               <div className="bg-gray-900 border-2 border-red-500 p-4">
-                <div className="text-red-500 font-black text-lg">❌</div>
+                <div className="flex justify-center mb-2">
+                  <XCircle className="w-6 h-6 text-red-500" />
+                </div>
                 <div className="text-white font-bold">ОТКЛОНЕНО</div>
               </div>
             </div>
